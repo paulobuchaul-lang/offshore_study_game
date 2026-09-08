@@ -1,0 +1,32 @@
+/*
+  Offshore Estudy Game — Folha de impressão/exportação
+  RF-08: ao imprimir/exportar, oculta o Cockpit Mestre e a navegação,
+  deixando apenas o conteúdo (módulo, anotações) legível em papel.
+*/
+
+@media print {
+  #cockpit-master-mount,
+  .subsea-nav,
+  .subsea-nav--top,
+  .subsea-nav--bottom,
+  .opening__scanlines,
+  .crt-scanlines {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .card,
+  [class*="__card"] {
+    border: 1px solid #000000 !important;
+    box-shadow: none !important;
+  }
+
+  a[href]::after {
+    content: "";
+  }
+}

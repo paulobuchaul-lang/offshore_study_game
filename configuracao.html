@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Configuração — Offshore Estudy Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/core-tokens.css" />
+<link rel="stylesheet" href="assets/css/cockpit-master.css" />
+<link rel="stylesheet" href="assets/css/crt-arcade.css" />
+<link rel="stylesheet" href="assets/css/print.css" media="print" />
+<style>
+  .config-page { min-height: calc(100vh - 68px); display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .config-card { max-width: 520px; width: 100%; padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+  .config-card__title { margin: 0; font-size: 13px; }
+  .config-card__text { font-family: var(--font-reading); color: var(--color-text-dim); margin: 0; line-height: 1.6; }
+  .config-card__input { font-family: var(--font-mono); font-size: 12px; padding: 10px; background: var(--color-surface-lowest); border: 1px solid var(--color-surface-border); border-radius: 4px; color: var(--color-text-main); width: 100%; }
+  .config-card__actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .config-card__status { font-family: var(--font-mono); font-size: 11px; min-height: 16px; }
+</style>
+</head>
+<body>
+
+<main class="config-page">
+  <section class="card config-card">
+    <h1 class="font-display text-gold config-card__title">CONFIGURAÇÃO</h1>
+
+    <p class="config-card__text">
+      Este código faz o jogo lembrar do seu tema, do seu progresso e das suas anotações
+      em qualquer aparelho — notebook ou celular. Você não precisa entender o que ele
+      significa: é só colar aqui o código que o Paulo te enviou.
+    </p>
+
+    <label class="font-mono text-dim" for="token-input" style="font-size: 11px;">CÓDIGO DE SINCRONIZAÇÃO</label>
+    <input type="password" id="token-input" class="config-card__input" placeholder="Cole aqui o código recebido" autocomplete="off" />
+
+    <div class="config-card__actions">
+      <button type="button" id="save-token-btn" class="cockpit-master__btn">Salvar e conectar</button>
+      <button type="button" id="remove-token-btn" class="cockpit-master__btn">Remover código</button>
+    </div>
+
+    <p class="config-card__status" id="config-status"></p>
+
+    <p class="config-card__text" style="font-size: 11px;">
+      Seu código fica guardado só neste aparelho e é usado apenas para conversar
+      diretamente com o jogo — nunca é enviado para nenhum outro lugar. Se algo parecer
+      errado, é só falar com o Paulo: ele consegue gerar um novo código a qualquer momento,
+      sem perder nada do que você já estudou.
+    </p>
+
+    <a href="index.html" class="font-mono text-dim" style="font-size: 11px;">← Voltar ao início</a>
+  </section>
+</main>
+
+<script src="assets/js/theme-controller.js"></script>
+<script src="assets/js/audio-engine.js"></script>
+<script src="assets/js/state-store.js"></script>
+<script src="assets/js/github-sync-client.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/cockpit-element.js"></script>
+<script>
+  const cockpit = SubseaCockpit.init({ activeNav: 'config' });
+
+  const TOKEN_KEY = 'subsea_github_token';
+  const input = document.getElementById('token-input');
+  const status = document.getElementById('config-status');
+
+  try {
+    const existing = window.localStorage.getItem(TOKEN_KEY);
+    if (existing) {
+      input.value = existing;
+      status.textContent = 'Já conectado neste aparelho.';
+      status.className = 'config-card__status text-ok';
+    }
+  } catch (err) { /* localStorage indisponível */ }
+
+  document.getElementById('save-token-btn').addEventListener('click', async () => {
+    const value = input.value.trim();
+    if (!value) {
+      status.textContent = 'Cole o código antes de salvar.';
+      status.className = 'config-card__status text-alert';
+      return;
+    }
+    status.textContent = 'Verificando...';
+    status.className = 'config-card__status text-dim';
+
+    const client = new SubseaGithubSyncClient({ token: value, usuarioId: cockpit.store.getState().usuario.id });
+    try {
+      await client.validate();
+      window.localStorage.setItem(TOKEN_KEY, value);
+      cockpit.store.attachSyncClient(client);
+      await cockpit.store.initialSync();
+      cockpit.audio.playSuccess();
+      status.textContent = 'Conectado! Seu progresso agora sincroniza entre aparelhos.';
+      status.className = 'config-card__status text-ok';
+    } catch (err) {
+      cockpit.audio.playError();
+      status.textContent = 'Não consegui confirmar esse código. Verifique se copiou certinho ou fale com o Paulo.';
+      status.className = 'config-card__status text-alert';
+    }
+  });
+
+  document.getElementById('remove-token-btn').addEventListener('click', () => {
+    try { window.localStorage.removeItem(TOKEN_KEY); } catch (err) { /* noop */ }
+    cockpit.store.detachSyncClient();
+    input.value = '';
+    status.textContent = 'Código removido. O jogo continua funcionando normalmente neste aparelho, só sem sincronizar.';
+    status.className = 'config-card__status text-dim';
+  });
+</script>
+</body>
+</html>

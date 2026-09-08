@@ -1,0 +1,152 @@
+/*
+  Offshore Estudy Game — Cockpit Mestre (HUD fixo) + Navegação
+  Breakpoint de troca menu superior <-> barra inferior: 1024px (RF-07 / D-06,
+  confirmado em sessão /reversa-clarify).
+*/
+
+.cockpit-master {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 16px;
+  background: var(--color-surface-lowest);
+  border-bottom: var(--border-width) solid var(--color-surface-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.cockpit-master__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cockpit-master__brand {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--color-primary-gold);
+  letter-spacing: 0.05em;
+}
+
+.cockpit-master__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cockpit-master__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--color-surface-card);
+  border: var(--border-width) solid var(--color-surface-border);
+  border-radius: 4px;
+  color: var(--color-text-main);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.cockpit-master__btn:hover {
+  border-color: var(--color-primary-gold);
+}
+
+.cockpit-master__led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-neon-green);
+  box-shadow: 0 0 6px var(--color-neon-green);
+}
+
+.cockpit-master__led--pending {
+  background: var(--color-accent-amber);
+  box-shadow: 0 0 6px var(--color-accent-amber);
+  animation: subsea-pulse 1.5s infinite;
+}
+
+.cockpit-master__led--off {
+  background: var(--color-text-dim);
+  box-shadow: none;
+}
+
+/* ---------- Navegação: desktop >= 1024px (menu no topo) ---------- */
+.subsea-nav {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.subsea-nav__link {
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.subsea-nav__link:hover,
+.subsea-nav__link[aria-current="page"] {
+  color: var(--color-primary-gold);
+  background: var(--color-surface-card);
+}
+
+.subsea-nav--bottom {
+  display: none;
+}
+
+@media (max-width: 1023.98px) {
+  .subsea-nav--top {
+    display: none;
+  }
+
+  .subsea-nav--bottom {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    justify-content: space-around;
+    align-items: center;
+    height: 68px;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    background: var(--color-surface-lowest);
+    border-top: var(--border-width) solid var(--color-surface-border);
+    overflow-x: auto;
+  }
+
+  .subsea-nav--bottom .subsea-nav__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 48px;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  body {
+    padding-bottom: 68px;
+  }
+}
+
+@keyframes subsea-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Acessibilidade: RF-12 — desativa efeitos de shake/flash quando o SO pede movimento reduzido. */
+@media (prefers-reduced-motion: reduce) {
+  .cockpit-master__led--pending {
+    animation: none;
+  }
+}

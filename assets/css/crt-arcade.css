@@ -1,0 +1,58 @@
+/*
+  Offshore Estudy Game — Efeitos CRT/Arcade 16-bit
+  Scanlines, chanfros e as classes de transição dramática (shake/flash).
+  RF-12: prefers-reduced-motion desativa shake/flash, mantendo só a troca de conteúdo.
+*/
+
+.opening__scanlines,
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+  background-size: 100% 4px;
+  mix-blend-mode: multiply;
+}
+
+.crt-chanfro {
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+/* Transição dramática entre telas (ex.: Press Start -> Trilha). */
+.subsea-transition-shake {
+  animation: subsea-shake 0.15s ease-in-out 2;
+}
+
+.subsea-transition-flash::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  animation: subsea-flash 0.3s ease-out forwards;
+}
+
+@keyframes subsea-shake {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+
+@keyframes subsea-flash {
+  0% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* RF-12 / D-07: sem shake nem flash quando o sistema pede movimento reduzido. */
+@media (prefers-reduced-motion: reduce) {
+  .subsea-transition-shake {
+    animation: none;
+  }
+
+  .subsea-transition-flash::after {
+    animation: none;
+    opacity: 0;
+  }
+}
