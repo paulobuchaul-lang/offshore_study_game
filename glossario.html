@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Glossário — Offshore Estudy Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/core-tokens.css" />
+<link rel="stylesheet" href="assets/css/cockpit-master.css" />
+<link rel="stylesheet" href="assets/css/crt-arcade.css" />
+<link rel="stylesheet" href="assets/css/print.css" media="print" />
+</head>
+<body>
+
+<main class="glossario-page">
+  <section class="card glossario-page__header">
+    <h1 class="font-display text-gold glossario-page__title">GLOSSÁRIO</h1>
+
+    <input
+      type="text"
+      id="glossario-busca"
+      class="glossario-page__busca"
+      placeholder="Buscar termo, sigla ou definição..."
+      autocomplete="off"
+    />
+
+    <div class="glossario-page__indice" id="glossario-indice"></div>
+
+    <div class="glossario-page__controles">
+      <span class="font-mono text-dim" id="glossario-contador"></span>
+      <label class="font-mono text-dim glossario-page__page-size">
+        Por página:
+        <select id="glossario-tamanho-pagina">
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </label>
+      <button type="button" id="glossario-exportar" class="cockpit-master__btn">🖨️ Exportar/Imprimir</button>
+    </div>
+  </section>
+
+  <section class="glossario-page__lista" id="glossario-lista"></section>
+
+  <nav class="glossario-page__paginacao" id="glossario-paginacao"></nav>
+</main>
+
+<script src="assets/js/theme-controller.js"></script>
+<script src="assets/js/audio-engine.js"></script>
+<script src="assets/js/state-store.js"></script>
+<script src="assets/js/github-sync-client.js"></script>
+<script src="assets/js/glossario-engine.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/cockpit-element.js"></script>
+<script>
+  const cockpit = SubseaCockpit.init({ activeNav: 'glossario' });
+  const engine = window.SubseaGlossarioEngine;
+
+  let buscaAtual = '';
+  let tamanhoPagina = 10;
+  let paginaAtual = 1;
+
+  function renderIndiceAlfabetico(listaFiltrada) {
+    const letras = engine.indiceAlfabetico(listaFiltrada);
+    const el = document.getElementById('glossario-indice');
+    el.innerHTML = letras
+      .map((l) => `<button type="button" class="glossario-page__letra" data-letra="${l}">${l}</button>`)
+      .join('');
+    el.querySelectorAll('[data-letra]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const alvo = document.querySelector(`[data-inicial="${btn.dataset.letra}"]`);
+        if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        cockpit.audio.playBlip(700, 0.05);
+      });
+    });
+  }
+
+  function renderLista(listaFiltrada) {
+    const { itens, totalPaginas } = engine.paginar(listaFiltrada, paginaAtual, tamanhoPagina);
+    const listaEl = document.getElementById('glossario-lista');
+
+    if (listaFiltrada.length === 0) {
+      listaEl.innerHTML = `
+        <div class="card glossario-page__vazio">
+          <p class="text-dim">Nenhum termo encontrado para "${buscaAtual}".</p>
+          <a href="busca.html" class="font-mono text-gold">Tentar na busca rápida →</a>
+        </div>`;
+      document.getElementById('glossario-paginacao').innerHTML = '';
+      return;
+    }
+
+    listaEl.innerHTML = itens
+      .map((t) => {
+        const inicial = t.termo.charAt(0).toUpperCase();
+        const icone = engine.getIconeCategoria(t.categoria);
+        const termoDestacado = engine.destacar(t.termo, buscaAtual);
+        const definicaoDestacada = engine.destacar(t.definicao, buscaAtual);
+        const linkModulo = t.moduloRelacionadoId
+          ? `<a href="capitulos/index.html" class="font-mono glossario-page__link-modulo">Ver módulo relacionado →</a>`
+          : '';
+        return `
+          <article class="card glossario-page__termo" data-inicial="${inicial}">
+            <div class="glossario-page__termo-icone">${icone}</div>
+            <div class="glossario-page__termo-corpo">
+              <h2 class="font-display text-gold glossario-page__termo-titulo">
+                ${termoDestacado}${t.sigla ? ` <span class="text-dim font-mono">(${t.sigla})</span>` : ''}
+              </h2>
+              <p class="glossario-page__termo-definicao">${definicaoDestacada}</p>
+              ${linkModulo}
+            </div>
+          </article>`;
+      })
+      .join('');
+
+    renderPaginacao(totalPaginas);
+  }
+
+  function renderPaginacao(totalPaginas) {
+    const el = document.getElementById('glossario-paginacao');
+    if (totalPaginas <= 1) {
+      el.innerHTML = '';
+      return;
+    }
+    let botoes = '';
+    for (let p = 1; p <= totalPaginas; p += 1) {
+      botoes += `<button type="button" class="cockpit-master__btn ${p === paginaAtual ? 'text-gold' : ''}" data-pagina="${p}">${p}</button>`;
+    }
+    el.innerHTML = botoes;
+    el.querySelectorAll('[data-pagina]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        paginaAtual = Number(btn.dataset.pagina);
+        atualizar();
+      });
+    });
+  }
+
+  function atualizar() {
+    const listaFiltrada = engine.filtrar(buscaAtual);
+    document.getElementById('glossario-contador').textContent =
+      buscaAtual
+        ? `${listaFiltrada.length} de ${engine.termos.length} termos`
+        : `${engine.termos.length} termos`;
+    renderIndiceAlfabetico(listaFiltrada);
+    renderLista(listaFiltrada);
+  }
+
+  document.getElementById('glossario-busca').addEventListener('input', (e) => {
+    buscaAtual = e.target.value.trim();
+    paginaAtual = 1;
+    atualizar();
+  });
+
+  document.getElementById('glossario-tamanho-pagina').addEventListener('change', (e) => {
+    tamanhoPagina = Number(e.target.value);
+    paginaAtual = 1;
+    atualizar();
+    cockpit.audio.playBlip(650, 0.05);
+  });
+
+  document.getElementById('glossario-exportar').addEventListener('click', () => {
+    window.print();
+  });
+
+  engine.carregar().then(atualizar);
+</script>
+</body>
+</html>

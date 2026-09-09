@@ -271,3 +271,137 @@ body {
   opacity: 0.4;
   filter: grayscale(0.6);
 }
+
+/* ---------- Glossário ---------- */
+.glossario-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.glossario-page__header {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glossario-page__title {
+  margin: 0;
+  font-size: 14px;
+}
+
+.glossario-page__busca {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  color: var(--color-text-main);
+  width: 100%;
+}
+
+.glossario-page__indice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.glossario-page__letra {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--color-surface-border);
+  background: var(--color-surface-lowest);
+  color: var(--color-text-dim);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.glossario-page__letra:hover {
+  color: var(--color-primary-gold);
+  border-color: var(--color-primary-gold);
+}
+
+.glossario-page__controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.glossario-page__page-size select {
+  font-family: var(--font-mono);
+  background: var(--color-surface-lowest);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin-left: 4px;
+}
+
+.glossario-page__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.glossario-page__vazio {
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.glossario-page__termo {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.glossario-page__termo-icone {
+  font-size: 24px;
+}
+
+.glossario-page__termo-titulo {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.glossario-page__termo-definicao {
+  font-family: var(--font-reading);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.glossario-page__link-modulo {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.glossario-page__paginacao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.glossario-page mark {
+  background: var(--color-primary-gold);
+  color: var(--color-surface-lowest);
+  border-radius: 2px;
+  padding: 0 2px;
+}
