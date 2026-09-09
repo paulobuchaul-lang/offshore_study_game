@@ -29,6 +29,7 @@
     "sigla": "FPSO",
     "definicao": "Unidade flutuante que processa, armazena e transfere petróleo produzido no mar, funcionando como uma refinaria e um tanque flutuante.",
     "categoria": "embarcacao-unidade",
+    "imagem": "assets/img/glossario/fpso.png",
     "moduloRelacionadoId": null
   },
   {

@@ -100,15 +100,21 @@
         const linkModulo = t.moduloRelacionadoId
           ? `<a href="capitulos/index.html" class="font-mono glossario-page__link-modulo">Ver módulo relacionado →</a>`
           : '';
+        const imagem = t.imagem
+          ? `<img class="glossario-page__termo-imagem" src="${t.imagem}" alt="Diagrama esquemático de ${t.termo}" loading="lazy" />`
+          : '';
         return `
           <article class="card glossario-page__termo" data-inicial="${inicial}">
-            <div class="glossario-page__termo-icone">${icone}</div>
-            <div class="glossario-page__termo-corpo">
-              <h2 class="font-display text-gold glossario-page__termo-titulo">
-                ${termoDestacado}${t.sigla ? ` <span class="text-dim font-mono">(${t.sigla})</span>` : ''}
-              </h2>
-              <p class="glossario-page__termo-definicao">${definicaoDestacada}</p>
-              ${linkModulo}
+            ${imagem}
+            <div class="glossario-page__termo-linha">
+              <div class="glossario-page__termo-icone">${icone}</div>
+              <div class="glossario-page__termo-corpo">
+                <h2 class="font-display text-gold glossario-page__termo-titulo">
+                  ${termoDestacado}${t.sigla ? ` <span class="text-dim font-mono">(${t.sigla})</span>` : ''}
+                </h2>
+                <p class="glossario-page__termo-definicao">${definicaoDestacada}</p>
+                ${linkModulo}
+              </div>
             </div>
           </article>`;
       })
