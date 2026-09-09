@@ -129,28 +129,63 @@ class SubseaAudioEngine {
     if (!this.ctx) return;
     this.bgmEnabled = true;
 
-    const bassLine = [110, 110, 130.81, 98];
+    // Sequenciador de 16 passos (200ms/passo, ~3.2s de loop) em Lá menor — baixo sincopado,
+    // arpejo de lead nos contratempos e um "hi-hat" curto marcando o groove.
+    const STEP_MS = 200;
+    const bassLine = [110, 0, 110, 130.81, 0, 110, 0, 98, 110, 0, 110, 130.81, 0, 98, 0, 110];
+    const leadLine = [0, 440, 0, 523.25, 0, 659.25, 0, 523.25, 0, 440, 0, 392, 0, 523.25, 0, 440];
+    const hatSteps = [1, 3, 5, 7, 9, 11, 13, 15];
     let step = 0;
 
     const playStep = () => {
       if (!this.bgmEnabled) return;
-      const freq = bassLine[step % bassLine.length];
       const t = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, t);
-      gain.gain.setValueAtTime(this.volume * 0.25, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-      osc.connect(gain);
-      gain.connect(this.masterGain);
-      osc.start(t);
-      osc.stop(t + 0.35);
+      const i = step % 16;
+
+      if (bassLine[i]) {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(bassLine[i], t);
+        gain.gain.setValueAtTime(this.volume * 0.28, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(t);
+        osc.stop(t + 0.32);
+      }
+
+      if (leadLine[i]) {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(leadLine[i], t);
+        gain.gain.setValueAtTime(this.volume * 0.14, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(t);
+        osc.stop(t + 0.16);
+      }
+
+      if (hatSteps.includes(i)) {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(5200, t);
+        gain.gain.setValueAtTime(this.volume * 0.05, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(t);
+        osc.stop(t + 0.03);
+      }
+
       step += 1;
     };
 
     playStep();
-    this._bgmTimer = window.setInterval(playStep, 400);
+    this._bgmTimer = window.setInterval(playStep, STEP_MS);
   }
 
   stopChiptuneBgm() {

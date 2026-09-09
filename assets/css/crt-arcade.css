@@ -56,3 +56,58 @@
     opacity: 0;
   }
 }
+
+/* Transição "mergulho" (bolhas subindo), usada junto do shake/flash em transições de destaque. */
+.subsea-dive-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.subsea-dive-transition--active {
+  opacity: 1;
+}
+
+.subsea-dive-transition__bubble {
+  position: absolute;
+  bottom: -40px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.9), rgba(6, 182, 212, 0.35) 60%, rgba(6, 182, 212, 0) 70%);
+  opacity: 0;
+}
+
+.subsea-dive-transition--active .subsea-dive-transition__bubble {
+  animation: subsea-bubble-rise 0.65s ease-in forwards;
+}
+
+.subsea-dive-transition__bubble:nth-child(1) { left: 3%; width: 10px; height: 10px; animation-delay: 0s; }
+.subsea-dive-transition__bubble:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 0.05s; }
+.subsea-dive-transition__bubble:nth-child(3) { left: 18%; width: 8px; height: 8px; animation-delay: 0.1s; }
+.subsea-dive-transition__bubble:nth-child(4) { left: 26%; width: 16px; height: 16px; animation-delay: 0.02s; }
+.subsea-dive-transition__bubble:nth-child(5) { left: 34%; width: 12px; height: 12px; animation-delay: 0.12s; }
+.subsea-dive-transition__bubble:nth-child(6) { left: 42%; width: 22px; height: 22px; animation-delay: 0.04s; }
+.subsea-dive-transition__bubble:nth-child(7) { left: 50%; width: 9px; height: 9px; animation-delay: 0.08s; }
+.subsea-dive-transition__bubble:nth-child(8) { left: 58%; width: 18px; height: 18px; animation-delay: 0.01s; }
+.subsea-dive-transition__bubble:nth-child(9) { left: 66%; width: 11px; height: 11px; animation-delay: 0.14s; }
+.subsea-dive-transition__bubble:nth-child(10) { left: 74%; width: 24px; height: 24px; animation-delay: 0.06s; }
+.subsea-dive-transition__bubble:nth-child(11) { left: 82%; width: 10px; height: 10px; animation-delay: 0.1s; }
+.subsea-dive-transition__bubble:nth-child(12) { left: 89%; width: 16px; height: 16px; animation-delay: 0.03s; }
+.subsea-dive-transition__bubble:nth-child(13) { left: 95%; width: 8px; height: 8px; animation-delay: 0.09s; }
+.subsea-dive-transition__bubble:nth-child(14) { left: 55%; width: 14px; height: 14px; animation-delay: 0.16s; }
+
+@keyframes subsea-bubble-rise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .subsea-dive-transition {
+    display: none;
+  }
+}

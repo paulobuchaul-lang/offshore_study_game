@@ -19,6 +19,9 @@
   .config-card__input { font-family: var(--font-mono); font-size: 12px; padding: 10px; background: var(--color-surface-lowest); border: 1px solid var(--color-surface-border); border-radius: 4px; color: var(--color-text-main); width: 100%; }
   .config-card__actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .config-card__status { font-family: var(--font-mono); font-size: 11px; min-height: 16px; }
+  .config-card__pref-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .config-card__pref-label { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-dim); }
+  .config-card__volume { flex: 1; min-width: 120px; accent-color: var(--color-primary-gold); }
 </style>
 </head>
 <body>
@@ -26,6 +29,30 @@
 <main class="config-page">
   <section class="card config-card">
     <h1 class="font-display text-gold config-card__title">CONFIGURAÇÃO</h1>
+
+    <h2 class="font-mono text-dim" style="font-size: 12px; margin: 0;">PREFERÊNCIAS</h2>
+
+    <div class="config-card__pref-row">
+      <span class="config-card__pref-label" id="pref-tema-label">TEMA: ESCURO</span>
+      <button type="button" id="pref-tema-btn" class="cockpit-master__btn">☀️ / 🌙 Alternar</button>
+    </div>
+
+    <div class="config-card__pref-row">
+      <span class="config-card__pref-label" id="pref-sfx-label">SFX: ON</span>
+      <button type="button" id="pref-sfx-btn" class="cockpit-master__btn">Ligar/Desligar</button>
+    </div>
+
+    <div class="config-card__pref-row">
+      <span class="config-card__pref-label" id="pref-bgm-label">TRILHA: PARADA</span>
+      <button type="button" id="pref-bgm-btn" class="cockpit-master__btn">Tocar/Parar</button>
+    </div>
+
+    <div class="config-card__pref-row">
+      <label class="config-card__pref-label" for="pref-volume">VOLUME</label>
+      <input type="range" id="pref-volume" class="config-card__volume" min="0" max="100" step="5" />
+    </div>
+
+    <h2 class="font-mono text-dim" style="font-size: 12px; margin: 8px 0 0;">SINCRONIZAÇÃO</h2>
 
     <p class="config-card__text">
       Este código faz o jogo lembrar do seu tema, do seu progresso e das suas anotações
@@ -62,6 +89,55 @@
 <script src="assets/js/cockpit-element.js"></script>
 <script>
   const cockpit = SubseaCockpit.init({ activeNav: 'config' });
+
+  (function wirePreferencias() {
+    const temaLabel = document.getElementById('pref-tema-label');
+    const temaBtn = document.getElementById('pref-tema-btn');
+    const sfxLabel = document.getElementById('pref-sfx-label');
+    const sfxBtn = document.getElementById('pref-sfx-btn');
+    const bgmLabel = document.getElementById('pref-bgm-label');
+    const bgmBtn = document.getElementById('pref-bgm-btn');
+    const volumeInput = document.getElementById('pref-volume');
+
+    function atualizarLabels() {
+      const estado = cockpit.store.getState();
+      temaLabel.textContent = `TEMA: ${cockpit.theme.getTheme() === 'light' ? 'CLARO' : 'ESCURO'}`;
+      sfxLabel.textContent = `SFX: ${estado.audio.sfxEnabled ? 'ON' : 'MUTE'}`;
+      bgmLabel.textContent = `TRILHA: ${cockpit.audio.isBgmPlaying() ? 'TOCANDO' : 'PARADA'}`;
+      volumeInput.value = Math.round(estado.audio.volume * 100);
+    }
+
+    temaBtn.addEventListener('click', () => {
+      cockpit.theme.toggle();
+      atualizarLabels();
+    });
+
+    sfxBtn.addEventListener('click', () => {
+      const muted = cockpit.audio.toggleMute();
+      cockpit.store.setAudio({ sfxEnabled: !muted });
+      if (!muted) cockpit.audio.playBlip(700, 0.08);
+      atualizarLabels();
+    });
+
+    bgmBtn.addEventListener('click', () => {
+      if (cockpit.audio.isBgmPlaying()) {
+        cockpit.audio.stopChiptuneBgm();
+        cockpit.store.setAudio({ bgmEnabled: false });
+      } else {
+        cockpit.audio.startChiptuneBgm();
+        cockpit.store.setAudio({ bgmEnabled: true });
+      }
+      atualizarLabels();
+    });
+
+    volumeInput.addEventListener('input', (e) => {
+      const volume = Number(e.target.value) / 100;
+      cockpit.audio.setVolume(volume);
+      cockpit.store.setAudio({ volume });
+    });
+
+    atualizarLabels();
+  })();
 
   const TOKEN_KEY = 'subsea_github_token';
   const input = document.getElementById('token-input');

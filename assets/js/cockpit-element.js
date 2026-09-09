@@ -16,6 +16,17 @@
 
 const GAME_TITLE = 'OFFSHORE ESTUDY GAME';
 const SUBSEA_TOKEN_STORAGE_KEY = 'subsea_github_token';
+const SUBSEA_FAVICON_SVG =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23091420'/%3E%3Ctext x='50' y='72' font-size='58' text-anchor='middle'%3E%E2%9A%93%3C/text%3E%3C/svg%3E";
+
+/** Injeta o favicon do jogo (SVG inline, zero asset extra) se a página ainda não tiver um. */
+function ensureFavicon() {
+  if (document.querySelector('link[rel="icon"]')) return;
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.href = SUBSEA_FAVICON_SVG;
+  document.head.appendChild(link);
+}
 
 function readStoredToken() {
   try {
@@ -54,6 +65,7 @@ const SubseaCockpit = {
   store: null,
 
   init({ activeNav = '', basePath = '' } = {}) {
+    ensureFavicon();
     this.store = new window.SubseaStateStore();
     this.audio = new window.SubseaAudioEngine();
 
@@ -106,6 +118,36 @@ const SubseaCockpit = {
     }
     mount.className = 'cockpit-master';
     mount.innerHTML = buildCockpitMarkup();
+    this._mountDiveTransition();
+  },
+
+  _mountDiveTransition() {
+    if (document.getElementById('subsea-dive-transition')) return;
+    const el = document.createElement('div');
+    el.id = 'subsea-dive-transition';
+    el.className = 'subsea-dive-transition';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = Array.from({ length: 14 })
+      .map(() => '<span class="subsea-dive-transition__bubble"></span>')
+      .join('');
+    document.body.appendChild(el);
+  },
+
+  /** Transição "mergulho": bolhas sobem por cima da tela. Não bloqueia navegação (resolve sempre). */
+  playDiveTransition(durationMs = 550) {
+    return new Promise((resolve) => {
+      const el = document.getElementById('subsea-dive-transition');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!el || reduced) {
+        resolve();
+        return;
+      }
+      el.classList.add('subsea-dive-transition--active');
+      window.setTimeout(() => {
+        el.classList.remove('subsea-dive-transition--active');
+        resolve();
+      }, durationMs);
+    });
   },
 
   _wireControls() {

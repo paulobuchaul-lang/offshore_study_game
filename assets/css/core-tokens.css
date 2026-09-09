@@ -81,9 +81,107 @@ body {
   justify-content: center;
   padding: 24px;
   position: relative;
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse at center, rgba(9, 20, 32, 0) 35%, rgba(9, 20, 32, 0.75) 100%),
+    url('img/opening/plataforma-noturna.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: subsea-flare-flicker 4s ease-in-out infinite;
+}
+
+.opening__stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.opening__star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-primary-gold);
+  box-shadow: 0 0 4px 1px var(--color-primary-gold);
+  opacity: 0;
+  animation: subsea-star-twinkle 3.2s ease-in-out infinite;
+}
+
+.opening__water-shimmer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22%;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 204, 0, 0.06) 45%, transparent 60%);
+  background-size: 250% 100%;
+  animation: subsea-water-shimmer 7s linear infinite;
+}
+
+.opening__rafaela {
+  position: absolute;
+  right: 6%;
+  bottom: 0;
+  height: 62%;
+  max-height: 420px;
+  width: auto;
+  z-index: 1;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
+  animation: subsea-idle-bob 3s ease-in-out infinite;
+}
+
+@media (max-width: 900px) {
+  .opening__rafaela {
+    display: none;
+  }
+}
+
+@keyframes subsea-flare-flicker {
+  0%, 100% { filter: brightness(1); }
+  45% { filter: brightness(1.06); }
+  50% { filter: brightness(0.97); }
+  55% { filter: brightness(1.04); }
+}
+
+@keyframes subsea-star-twinkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes subsea-water-shimmer {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -250% 0%; }
+}
+
+@keyframes subsea-idle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening {
+    animation: none;
+  }
+  .opening__star {
+    animation: none;
+    opacity: 0.6;
+  }
+  .opening__water-shimmer {
+    animation: none;
+  }
+  .opening__rafaela {
+    animation: none;
+  }
 }
 
 .opening__hero {
+  position: relative;
+  z-index: 2;
   max-width: 480px;
   width: 100%;
   padding: 32px 24px;

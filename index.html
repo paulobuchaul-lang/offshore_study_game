@@ -18,6 +18,20 @@
 <main class="opening" id="opening-main">
   <div class="opening__scanlines" aria-hidden="true"></div>
 
+  <div class="opening__stars" aria-hidden="true">
+    <span class="opening__star" style="top: 8%; left: 12%; animation-delay: 0s;"></span>
+    <span class="opening__star" style="top: 14%; left: 82%; animation-delay: 0.6s;"></span>
+    <span class="opening__star" style="top: 22%; left: 45%; animation-delay: 1.2s;"></span>
+    <span class="opening__star" style="top: 6%; left: 62%; animation-delay: 1.8s;"></span>
+    <span class="opening__star" style="top: 18%; left: 25%; animation-delay: 2.4s;"></span>
+    <span class="opening__star" style="top: 10%; left: 92%; animation-delay: 0.3s;"></span>
+    <span class="opening__star" style="top: 26%; left: 8%; animation-delay: 1.5s;"></span>
+  </div>
+
+  <div class="opening__water-shimmer" aria-hidden="true"></div>
+
+  <img id="opening-rafaela" class="opening__rafaela" alt="" aria-hidden="true" />
+
   <section class="opening__hero card">
     <p class="font-mono text-dim opening__eyebrow">SISTEMA TÁTICO OFFSHORE</p>
     <h1 class="font-display opening__title text-gold">OFFSHORE<br />ESTUDY GAME</h1>
@@ -43,10 +57,41 @@
 <script>
   const cockpit = SubseaCockpit.init({ activeNav: 'inicio' });
 
+  /** Recorta o fundo sólido #091420 do sprite, deixando-o transparente para compor sobre o cenário. */
+  function recortarFundoSolido(img, corFundo, tolerancia) {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const dados = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const [cr, cg, cb] = corFundo;
+    for (let i = 0; i < dados.data.length; i += 4) {
+      const dist = Math.abs(dados.data[i] - cr) + Math.abs(dados.data[i + 1] - cg) + Math.abs(dados.data[i + 2] - cb);
+      if (dist <= tolerancia) dados.data[i + 3] = 0;
+    }
+    ctx.putImageData(dados, 0, 0);
+    return canvas.toDataURL('image/png');
+  }
+
+  (function carregarSpriteRafaela() {
+    const destino = document.getElementById('opening-rafaela');
+    const fonte = new Image();
+    fonte.onload = () => {
+      try {
+        destino.src = recortarFundoSolido(fonte, [9, 20, 32], 36);
+      } catch (err) {
+        destino.src = fonte.src; // navegador sem suporte a canvas: mostra com o fundo sólido mesmo
+      }
+    };
+    fonte.src = 'assets/img/opening/rafaela-sprite.jpg';
+  })();
+
   function goToTrilha() {
     cockpit.audio.playStartJingle();
     const main = document.getElementById('opening-main');
     main.classList.add('subsea-transition-shake', 'subsea-transition-flash');
+    cockpit.playDiveTransition();
     window.setTimeout(() => {
       window.location.href = 'capitulos/index.html';
     }, 280);
