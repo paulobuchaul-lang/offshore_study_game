@@ -17,6 +17,7 @@ function defaultState() {
     tema: 'dark',
     audio: { sfxEnabled: true, volume: 0.8, bgmEnabled: false },
     sync: { enabled: false, ultimaSincronizacaoEm: null, shaArquivoRemoto: null },
+    progresso: { modulos: {}, xp: 0, insigniasDesbloqueadas: [] },
     atualizadoEm: new Date().toISOString(),
   };
 }

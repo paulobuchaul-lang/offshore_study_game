@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Progresso — Offshore Estudy Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/core-tokens.css" />
+<link rel="stylesheet" href="assets/css/cockpit-master.css" />
+<link rel="stylesheet" href="assets/css/crt-arcade.css" />
+<link rel="stylesheet" href="assets/css/print.css" media="print" />
+</head>
+<body>
+
+<main class="progresso-page">
+  <section class="card progresso-page__resumo">
+    <h1 class="font-display text-gold progresso-page__title">DOSSIÊ DE PROGRESSO</h1>
+
+    <div class="progresso-page__patente">
+      <span class="font-mono text-dim">PATENTE ATUAL</span>
+      <span class="font-display text-gold" id="patente-atual">—</span>
+    </div>
+
+    <div class="progresso-page__xp">
+      <span class="font-mono" id="xp-atual">0 XP</span>
+      <span class="font-mono text-dim" id="xp-proxima-patente"></span>
+    </div>
+
+    <div class="progresso-page__contador font-mono" id="contador-modulos">
+      Nenhum módulo publicado ainda.
+    </div>
+
+    <a href="conquistas.html" class="cockpit-master__btn progresso-page__link-conquistas">
+      🏆 Ver Galeria de Conquistas
+    </a>
+  </section>
+
+  <section class="card progresso-page__modulos" id="lista-modulos-card">
+    <h2 class="font-display text-gold progresso-page__subtitle">MÓDULOS COM PROGRESSO</h2>
+    <ul class="progresso-page__lista" id="lista-modulos"></ul>
+  </section>
+</main>
+
+<script src="assets/js/theme-controller.js"></script>
+<script src="assets/js/audio-engine.js"></script>
+<script src="assets/js/state-store.js"></script>
+<script src="assets/js/github-sync-client.js"></script>
+<script src="assets/js/progress-engine.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/cockpit-element.js"></script>
+<script>
+  const cockpit = SubseaCockpit.init({ activeNav: 'progresso' });
+
+  const TOTAL_MODULOS_PUBLICADOS = 0; // placeholder até a trilha-de-aprendizagem existir
+
+  function renderProgresso() {
+    const { progresso } = cockpit.store.getState();
+    const patente = SubseaProgressEngine.getPatenteAtual(progresso.xp);
+    const proxima = SubseaProgressEngine.getProximaPatente(progresso.xp);
+    const concluidos = SubseaProgressEngine.contarModulosConcluidos(progresso);
+
+    document.getElementById('patente-atual').textContent = patente;
+    document.getElementById('xp-atual').textContent = `${progresso.xp} XP`;
+    document.getElementById('xp-proxima-patente').textContent = proxima
+      ? `(faltam ${proxima.min - progresso.xp} XP para ${proxima.titulo})`
+      : '(patente máxima atingida)';
+
+    const contadorEl = document.getElementById('contador-modulos');
+    if (TOTAL_MODULOS_PUBLICADOS === 0) {
+      contadorEl.textContent =
+        concluidos === 0
+          ? 'Nenhum módulo publicado ainda.'
+          : `Nenhum módulo publicado ainda — ${concluidos} módulo(s) de teste concluído(s).`;
+    } else {
+      contadorEl.textContent = `${concluidos} de ${TOTAL_MODULOS_PUBLICADOS} módulos concluídos.`;
+    }
+
+    const listaEl = document.getElementById('lista-modulos');
+    const moduloIds = Object.keys(progresso.modulos);
+    if (moduloIds.length === 0) {
+      listaEl.innerHTML = '<li class="text-dim">Nenhum módulo concluído ainda.</li>';
+    } else {
+      listaEl.innerHTML = moduloIds
+        .map((id) => {
+          const niveis = progresso.modulos[id].niveisConcluidos.join(', ');
+          return `<li><span class="text-gold">${id}</span> — níveis: ${niveis}</li>`;
+        })
+        .join('');
+    }
+  }
+
+  renderProgresso();
+  cockpit.store.onChange(renderProgresso);
+</script>
+</body>
+</html>

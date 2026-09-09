@@ -159,3 +159,115 @@ body {
   color: var(--color-text-dim);
   margin: 0;
 }
+
+/* ---------- Progresso / Dossiê ---------- */
+.progresso-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.progresso-page__resumo,
+.progresso-page__modulos {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progresso-page__title,
+.progresso-page__subtitle {
+  margin: 0;
+  font-size: 14px;
+}
+
+.progresso-page__patente,
+.progresso-page__xp {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+}
+
+.progresso-page__contador {
+  font-size: 12px;
+  color: var(--color-text-dim);
+}
+
+.progresso-page__link-conquistas {
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+.progresso-page__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ---------- Galeria de Conquistas ---------- */
+.conquistas-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.conquistas-page__header {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.conquistas-page__title {
+  margin: 0;
+  font-size: 14px;
+}
+
+.conquistas-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.insignia {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.insignia__icone {
+  font-size: 28px;
+}
+
+.insignia__titulo {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.insignia__descricao {
+  font-family: var(--font-reading);
+  font-size: 12px;
+}
+
+/* RN-05: insígnias bloqueadas ficam esmaecidas, nunca escondidas. */
+.insignia--bloqueada {
+  opacity: 0.4;
+  filter: grayscale(0.6);
+}
