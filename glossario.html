@@ -47,6 +47,11 @@
   <nav class="glossario-page__paginacao" id="glossario-paginacao"></nav>
 </main>
 
+<div class="glossario-lightbox" id="glossario-lightbox" hidden>
+  <button type="button" class="glossario-lightbox__fechar" id="glossario-lightbox-fechar" aria-label="Fechar">✕</button>
+  <img class="glossario-lightbox__imagem" id="glossario-lightbox-imagem" src="" alt="" />
+</div>
+
 <script src="assets/js/theme-controller.js"></script>
 <script src="assets/js/audio-engine.js"></script>
 <script src="assets/js/state-store.js"></script>
@@ -100,14 +105,16 @@
         const linkModulo = t.moduloRelacionadoId
           ? `<a href="capitulos/index.html" class="font-mono glossario-page__link-modulo">Ver módulo relacionado →</a>`
           : '';
-        const imagem = t.imagem
-          ? `<img class="glossario-page__termo-imagem" src="${t.imagem}" alt="Diagrama esquemático de ${t.termo}" loading="lazy" />`
-          : '';
+        const thumb = t.imagem
+          ? `<button type="button" class="glossario-page__thumb-btn" data-imagem="${t.imagem}" data-titulo="${t.termo.replace(/"/g, '&quot;')}" aria-label="Ampliar diagrama de ${t.termo}">
+               <img class="glossario-page__thumb" src="${t.imagem}" alt="Diagrama esquemático de ${t.termo}" loading="lazy" />
+               <span class="glossario-page__thumb-lupa">🔍</span>
+             </button>`
+          : `<div class="glossario-page__termo-icone">${icone}</div>`;
         return `
           <article class="card glossario-page__termo" data-inicial="${inicial}">
-            ${imagem}
             <div class="glossario-page__termo-linha">
-              <div class="glossario-page__termo-icone">${icone}</div>
+              ${thumb}
               <div class="glossario-page__termo-corpo">
                 <h2 class="font-display text-gold glossario-page__termo-titulo">
                   ${termoDestacado}${t.sigla ? ` <span class="text-dim font-mono">(${t.sigla})</span>` : ''}
@@ -121,7 +128,39 @@
       .join('');
 
     renderPaginacao(totalPaginas);
+
+    listaEl.querySelectorAll('.glossario-page__thumb-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        abrirLightbox(btn.dataset.imagem, btn.dataset.titulo);
+      });
+    });
   }
+
+  function abrirLightbox(src, titulo) {
+    const overlay = document.getElementById('glossario-lightbox');
+    const img = document.getElementById('glossario-lightbox-imagem');
+    img.src = src;
+    img.alt = `Diagrama esquemático de ${titulo}`;
+    overlay.hidden = false;
+    cockpit.audio.playBlip(750, 0.05);
+  }
+
+  function fecharLightbox() {
+    const overlay = document.getElementById('glossario-lightbox');
+    if (overlay.hidden) return;
+    overlay.hidden = true;
+    document.getElementById('glossario-lightbox-imagem').src = '';
+  }
+
+  document.getElementById('glossario-lightbox').addEventListener('click', fecharLightbox);
+  document.getElementById('glossario-lightbox-imagem').addEventListener('click', (e) => e.stopPropagation());
+  document.getElementById('glossario-lightbox-fechar').addEventListener('click', (e) => {
+    e.stopPropagation();
+    fecharLightbox();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharLightbox();
+  });
 
   function renderPaginacao(totalPaginas) {
     const el = document.getElementById('glossario-paginacao');
