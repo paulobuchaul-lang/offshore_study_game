@@ -486,6 +486,9 @@ body {
 
 /* ---------- Biblioteca de Normas Técnicas (feature 004) ---------- */
 .normas-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
