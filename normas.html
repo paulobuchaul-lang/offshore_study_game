@@ -141,6 +141,9 @@
             const linkModulo = n.moduloRelacionadoId
               ? `<a href="capitulos/index.html" class="font-mono glossario-page__link-modulo">Ver módulo relacionado →</a>`
               : '';
+            const linkOficial = n.linkOficial
+              ? `<a href="${n.linkOficial}" class="font-mono glossario-page__link-modulo" target="_blank" rel="noopener noreferrer">Ver norma oficial ↗</a>`
+              : '';
             return `
               <article class="card normas-page__norma">
                 <div class="normas-page__norma-cabecalho">
@@ -149,6 +152,7 @@
                 </div>
                 <p class="normas-page__norma-resumo">${resumoDestacado}</p>
                 ${tags}
+                ${linkOficial}
                 ${linkModulo}
               </article>`;
           })
