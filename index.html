@@ -57,38 +57,14 @@
 <script src="assets/js/github-sync-client.js"></script>
 <script src="assets/js/navigation.js"></script>
 <script src="assets/js/cockpit-element.js"></script>
+<script src="assets/js/sprite-utils.js"></script>
 <script>
   const cockpit = SubseaCockpit.init({ activeNav: 'inicio' });
 
-  /** Recorta o fundo sólido #091420 do sprite, deixando-o transparente para compor sobre o cenário. */
-  function recortarFundoSolido(img, corFundo, tolerancia) {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    const dados = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const [cr, cg, cb] = corFundo;
-    for (let i = 0; i < dados.data.length; i += 4) {
-      const dist = Math.abs(dados.data[i] - cr) + Math.abs(dados.data[i + 1] - cg) + Math.abs(dados.data[i + 2] - cb);
-      if (dist <= tolerancia) dados.data[i + 3] = 0;
-    }
-    ctx.putImageData(dados, 0, 0);
-    return canvas.toDataURL('image/png');
-  }
-
-  (function carregarSpriteRafaela() {
-    const destino = document.getElementById('opening-rafaela');
-    const fonte = new Image();
-    fonte.onload = () => {
-      try {
-        destino.src = recortarFundoSolido(fonte, [9, 20, 32], 36);
-      } catch (err) {
-        destino.src = fonte.src; // navegador sem suporte a canvas: mostra com o fundo sólido mesmo
-      }
-    };
-    fonte.src = 'assets/img/opening/rafaela-sprite.jpg';
-  })();
+  SubseaSpriteUtils.carregarSpriteRecortado(
+    'assets/img/opening/rafaela-sprite.jpg',
+    document.getElementById('opening-rafaela'),
+  );
 
   function goToTrilha() {
     cockpit.audio.playStartJingle();

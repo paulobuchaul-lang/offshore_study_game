@@ -314,7 +314,7 @@ body {
 
 /* ---------- Progresso / Dossiê ---------- */
 .progresso-page {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 24px;
   display: flex;
@@ -323,11 +323,44 @@ body {
 }
 
 .progresso-page__resumo,
-.progresso-page__modulos {
+.progresso-page__modulos,
+.progresso-page__insignias-preview {
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
+
+.progresso-page__perfil {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.progresso-page__retrato {
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+  border: 2px solid var(--color-primary-gold);
+  border-radius: 6px;
+  background: var(--color-surface-lowest);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.progresso-page__retrato-img {
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.progresso-page__identidade {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .progresso-page__title,
@@ -336,12 +369,73 @@ body {
   font-size: 14px;
 }
 
-.progresso-page__patente,
-.progresso-page__xp {
+.progresso-page__patente-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.progresso-page__xp-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progresso-page__xp-linha {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.progresso-page__xp-barra {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+}
+
+.progresso-page__xp-segmento {
+  flex: 1;
+  height: 10px;
+  background: var(--color-surface-card);
+  border-radius: 1px;
+}
+
+.progresso-page__xp-segmento--preenchido {
+  background: var(--color-primary-gold);
+  box-shadow: 0 0 4px var(--color-primary-gold);
+}
+
+.progresso-page__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.progresso-page__stat-card {
+  padding: 10px 14px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.progresso-page__stat-numero {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--color-primary-gold);
+}
+
+.progresso-page__stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-dim);
 }
 
 .progresso-page__contador {
@@ -360,9 +454,25 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+}
+
+.progresso-page__modulo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
   font-family: var(--font-mono);
   font-size: 12px;
+}
+
+.progresso-page__modulo-niveis {
+  color: var(--color-text-dim);
+  font-size: 11px;
 }
 
 /* ---------- Galeria de Conquistas ---------- */
