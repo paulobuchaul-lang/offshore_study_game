@@ -66,6 +66,14 @@
     document.getElementById('opening-rafaela'),
   );
 
+  // Referência real do Stitch: a ilustração e o texto "SUBSEA QUEST" são a mesma imagem.
+  // Recorta só a faixa de cima (plataforma/céu/estrelas), sem o texto queimado na metade de baixo.
+  SubseaSpriteUtils.carregarFundoRecortado(
+    'assets/img/opening/plataforma-noturna.jpg',
+    document.querySelector('.opening__banner'),
+    0.38,
+  );
+
   function goToTrilha() {
     cockpit.audio.playStartJingle();
     const main = document.getElementById('opening-main');
