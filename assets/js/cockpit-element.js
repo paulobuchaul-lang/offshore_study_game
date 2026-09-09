@@ -85,6 +85,7 @@ const SubseaCockpit = {
     this._mount();
     this._wireControls();
     this._refreshSyncIndicator();
+    this._resumeBgmSeSalvo();
 
     if (window.SubseaNavigation && typeof window.SubseaNavigation.render === 'function') {
       window.SubseaNavigation.render({ activeNav, audio: this.audio, basePath });
@@ -161,21 +162,48 @@ const SubseaCockpit = {
     });
 
     const bgmBtn = document.getElementById('subsea-bgm-btn');
-    const bgmLabel = document.getElementById('subsea-bgm-label');
     bgmBtn.addEventListener('click', () => {
       if (this.audio.isBgmPlaying()) {
         this.audio.stopChiptuneBgm();
-        bgmLabel.textContent = 'TRILHA: INICIAR';
         this.store.setAudio({ bgmEnabled: false });
       } else {
         this.audio.startChiptuneBgm();
-        bgmLabel.textContent = 'TRILHA: TOCANDO';
         this.store.setAudio({ bgmEnabled: true });
       }
+      this._syncBgmLabel();
     });
 
     const themeBtn = document.getElementById('subsea-theme-btn');
     themeBtn.addEventListener('click', () => this.theme.toggle());
+  },
+
+  _syncBgmLabel() {
+    const bgmLabel = document.getElementById('subsea-bgm-label');
+    if (bgmLabel) bgmLabel.textContent = this.audio.isBgmPlaying() ? 'TRILHA: TOCANDO' : 'TRILHA: INICIAR';
+  },
+
+  /**
+   * A trilha nunca começa sozinha "do zero" (RF-10): isto só retoma um estado que a
+   * própria usuária já ligou numa página anterior. Como cada página é um reload
+   * completo, o AudioContext nasce suspenso até a primeira interação — por isso
+   * também escuta o primeiro clique/tecla da página nova para destravar o áudio.
+   */
+  _resumeBgmSeSalvo() {
+    const estava = this.store.getState().audio.bgmEnabled;
+    if (!estava) return;
+
+    // Agenda a trilha já de cara (silenciosa até o contexto ser destravado por um gesto real).
+    this.audio.startChiptuneBgm();
+    this._syncBgmLabel();
+
+    const destravar = () => {
+      if (this.audio.ctx && this.audio.ctx.state === 'suspended') {
+        this.audio.ctx.resume();
+      }
+    };
+    ['pointerdown', 'keydown'].forEach((evento) => {
+      document.addEventListener(evento, destravar, { once: true });
+    });
   },
 
   _refreshSyncIndicator() {

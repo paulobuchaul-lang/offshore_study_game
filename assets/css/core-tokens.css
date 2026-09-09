@@ -77,18 +77,38 @@ body {
 .opening {
   min-height: calc(100vh - 68px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  flex-direction: column;
   position: relative;
+  opacity: 1;
+  transition: opacity 0.25s ease-in;
+}
+
+.opening--saindo {
+  opacity: 0;
+}
+
+/* Banner: a ilustração aparece por inteiro, sem nada sobreposto por cima. */
+.opening__banner {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+  min-height: 200px;
+  max-height: 380px;
   overflow: hidden;
-  background-image:
-    radial-gradient(ellipse at center, rgba(9, 20, 32, 0) 35%, rgba(9, 20, 32, 0.75) 100%),
-    url('../img/opening/plataforma-noturna.jpg');
+  background-image: url('../img/opening/plataforma-noturna.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  animation: subsea-flare-flicker 4s ease-in-out infinite;
+  animation:
+    subsea-banner-in 0.9s ease-out both,
+    subsea-flare-flicker 4s ease-in-out 0.9s infinite;
+}
+
+.opening__banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(9, 20, 32, 0) 65%, var(--color-surface) 100%);
+  pointer-events: none;
 }
 
 .opening__stars {
@@ -114,31 +134,58 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 22%;
+  height: 35%;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(100deg, transparent 30%, rgba(255, 204, 0, 0.06) 45%, transparent 60%);
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 204, 0, 0.08) 45%, transparent 60%);
   background-size: 250% 100%;
   animation: subsea-water-shimmer 7s linear infinite;
+}
+
+/* Conteúdo: card + Rafaela, sobre o fundo sólido normal do tema (mesma cor do recorte dela). */
+.opening__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
 }
 
 .opening__rafaela {
   position: absolute;
   right: 6%;
   bottom: 0;
-  height: 62%;
-  max-height: 420px;
+  height: 68%;
+  max-height: 380px;
   width: auto;
   z-index: 1;
   image-rendering: pixelated;
   filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
-  animation: subsea-idle-bob 3s ease-in-out infinite;
+  animation:
+    subsea-rafaela-in 0.6s ease-out 0.5s both,
+    subsea-idle-bob 3s ease-in-out 1.1s infinite;
 }
 
 @media (max-width: 900px) {
   .opening__rafaela {
     display: none;
   }
+}
+
+@keyframes subsea-banner-in {
+  0% { opacity: 0; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes subsea-card-in {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subsea-rafaela-in {
+  0% { opacity: 0; transform: translateX(24px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes subsea-flare-flicker {
@@ -165,6 +212,9 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .opening {
+    transition: none;
+  }
+  .opening__banner {
     animation: none;
   }
   .opening__star {
@@ -175,6 +225,9 @@ body {
     animation: none;
   }
   .opening__rafaela {
+    animation: none;
+  }
+  .opening__hero {
     animation: none;
   }
 }
@@ -190,6 +243,7 @@ body {
   flex-direction: column;
   gap: 16px;
   align-items: center;
+  animation: subsea-card-in 0.6s ease-out 0.25s both;
 }
 
 .opening__eyebrow {

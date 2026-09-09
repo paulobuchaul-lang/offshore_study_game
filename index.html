@@ -18,33 +18,36 @@
 <main class="opening" id="opening-main">
   <div class="opening__scanlines" aria-hidden="true"></div>
 
-  <div class="opening__stars" aria-hidden="true">
-    <span class="opening__star" style="top: 8%; left: 12%; animation-delay: 0s;"></span>
-    <span class="opening__star" style="top: 14%; left: 82%; animation-delay: 0.6s;"></span>
-    <span class="opening__star" style="top: 22%; left: 45%; animation-delay: 1.2s;"></span>
-    <span class="opening__star" style="top: 6%; left: 62%; animation-delay: 1.8s;"></span>
-    <span class="opening__star" style="top: 18%; left: 25%; animation-delay: 2.4s;"></span>
-    <span class="opening__star" style="top: 10%; left: 92%; animation-delay: 0.3s;"></span>
-    <span class="opening__star" style="top: 26%; left: 8%; animation-delay: 1.5s;"></span>
+  <div class="opening__banner" aria-hidden="true">
+    <div class="opening__stars">
+      <span class="opening__star" style="top: 8%; left: 12%; animation-delay: 0s;"></span>
+      <span class="opening__star" style="top: 14%; left: 82%; animation-delay: 0.6s;"></span>
+      <span class="opening__star" style="top: 22%; left: 45%; animation-delay: 1.2s;"></span>
+      <span class="opening__star" style="top: 6%; left: 62%; animation-delay: 1.8s;"></span>
+      <span class="opening__star" style="top: 18%; left: 25%; animation-delay: 2.4s;"></span>
+      <span class="opening__star" style="top: 10%; left: 92%; animation-delay: 0.3s;"></span>
+      <span class="opening__star" style="top: 26%; left: 8%; animation-delay: 1.5s;"></span>
+    </div>
+    <div class="opening__water-shimmer"></div>
   </div>
 
-  <div class="opening__water-shimmer" aria-hidden="true"></div>
+  <div class="opening__content">
+    <img id="opening-rafaela" class="opening__rafaela" alt="" aria-hidden="true" />
 
-  <img id="opening-rafaela" class="opening__rafaela" alt="" aria-hidden="true" />
+    <section class="opening__hero card">
+      <p class="font-mono text-dim opening__eyebrow">SISTEMA TÁTICO OFFSHORE</p>
+      <h1 class="font-display opening__title text-gold">OFFSHORE<br />ESTUDY GAME</h1>
+      <p class="opening__subtitle">
+        Engenharia submarina e exploração de petróleo, em uma jornada de estudo no seu ritmo.
+      </p>
 
-  <section class="opening__hero card">
-    <p class="font-mono text-dim opening__eyebrow">SISTEMA TÁTICO OFFSHORE</p>
-    <h1 class="font-display opening__title text-gold">OFFSHORE<br />ESTUDY GAME</h1>
-    <p class="opening__subtitle">
-      Engenharia submarina e exploração de petróleo, em uma jornada de estudo no seu ritmo.
-    </p>
+      <button type="button" id="press-start-btn" class="opening__start-btn font-display">
+        ▶ PRESS START ◀
+      </button>
 
-    <button type="button" id="press-start-btn" class="opening__start-btn font-display">
-      ▶ PRESS START ◀
-    </button>
-
-    <p class="font-mono text-dim opening__hint">Aperte Espaço ou Enter</p>
-  </section>
+      <p class="font-mono text-dim opening__hint">Aperte Espaço ou Enter</p>
+    </section>
+  </div>
 
 </main>
 
@@ -90,7 +93,7 @@
   function goToTrilha() {
     cockpit.audio.playStartJingle();
     const main = document.getElementById('opening-main');
-    main.classList.add('subsea-transition-shake', 'subsea-transition-flash');
+    main.classList.add('subsea-transition-shake', 'subsea-transition-flash', 'opening--saindo');
     cockpit.playDiveTransition();
     window.setTimeout(() => {
       window.location.href = 'capitulos/index.html';
