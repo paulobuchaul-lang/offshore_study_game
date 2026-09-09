@@ -468,6 +468,15 @@ body {
   margin-top: 6px;
   font-size: 11px;
   text-decoration: none;
+  color: var(--color-cyan-glow);
+}
+
+.glossario-page__link-modulo:visited {
+  color: var(--color-cyan-glow);
+}
+
+.glossario-page__link-modulo:hover {
+  text-decoration: underline;
 }
 
 .glossario-page__paginacao {
