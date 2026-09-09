@@ -13,6 +13,7 @@
     "sigla": "BOP",
     "definicao": "Equipamento de segurança instalado no topo do poço durante a perfuração, capaz de fechar e vedar o poço em caso de um kick (fluxo indesejado de fluido).",
     "categoria": "valvula-equipamento",
+    "imagem": "assets/img/glossario/bop.png",
     "moduloRelacionadoId": null
   },
   {
@@ -21,6 +22,7 @@
     "sigla": null,
     "definicao": "Duto que conecta o poço no leito marinho à unidade de produção na superfície, transportando fluidos (óleo, gás, água) entre os dois pontos.",
     "categoria": "duto-riser",
+    "imagem": "assets/img/glossario/riser.png",
     "moduloRelacionadoId": null
   },
   {
@@ -38,6 +40,7 @@
     "sigla": null,
     "definicao": "Estrutura instalada no topo do poço que sustenta os revestimentos e serve de base para a instalação da ANM.",
     "categoria": "poco",
+    "imagem": "assets/img/glossario/wellhead.png",
     "moduloRelacionadoId": null
   },
   {
@@ -46,6 +49,7 @@
     "sigla": null,
     "definicao": "Estrutura submarina que reúne e distribui o fluxo de vários poços antes de enviá-lo para a unidade de produção, funcionando como um ponto de junção.",
     "categoria": "valvula-equipamento",
+    "imagem": "assets/img/glossario/manifold.png",
     "moduloRelacionadoId": null
   },
   {
@@ -54,6 +58,7 @@
     "sigla": "ROV",
     "definicao": "Veículo submarino não tripulado, operado remotamente, usado para inspeção, manutenção e intervenção em equipamentos no leito marinho.",
     "categoria": "geral",
+    "imagem": "assets/img/glossario/rov.png",
     "moduloRelacionadoId": null
   },
   {
@@ -62,6 +67,7 @@
     "sigla": null,
     "definicao": "Cabo/duto composto que transporta sinais elétricos, hidráulicos e químicos entre a unidade de superfície e os equipamentos submarinos.",
     "categoria": "duto-riser",
+    "imagem": "assets/img/glossario/umbilical.png",
     "moduloRelacionadoId": null
   }
 ]
