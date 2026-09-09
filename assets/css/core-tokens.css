@@ -483,3 +483,183 @@ body {
   border-radius: 2px;
   padding: 0 2px;
 }
+
+/* ---------- Biblioteca de Normas Técnicas (feature 004) ---------- */
+.normas-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.normas-page__header {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.normas-page__title {
+  margin: 0;
+  font-size: 14px;
+}
+
+.normas-page__busca {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  color: var(--color-text-main);
+  width: 100%;
+}
+
+.normas-page__aviso {
+  font-family: var(--font-reading);
+  font-size: 12px;
+  margin: 0;
+}
+
+.normas-page__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.normas-page__pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-surface-border);
+  background: var(--color-surface-lowest);
+  color: var(--color-text-dim);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.normas-page__pill:hover {
+  border-color: var(--color-primary-gold);
+  color: var(--color-primary-gold);
+}
+
+.normas-page__pill--ativo {
+  background: var(--color-primary-gold);
+  border-color: var(--color-primary-gold);
+  color: var(--color-surface-lowest);
+  font-weight: bold;
+}
+
+.normas-page__controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.normas-page__page-size select {
+  font-family: var(--font-mono);
+  background: var(--color-surface-lowest);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin-left: 4px;
+}
+
+.normas-page__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.normas-page__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.normas-page__grupo-titulo {
+  margin: 0;
+  font-size: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.normas-page__vazio {
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.normas-page__norma {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.normas-page__norma-cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.normas-page__norma-codigo {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.normas-page__badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 6px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-primary-gold);
+  color: var(--color-primary-gold);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.normas-page__norma-resumo {
+  font-family: var(--font-reading);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.normas-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.normas-page__tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-border);
+  color: var(--color-text-dim);
+  border-radius: 4px;
+}
+
+.normas-page__paginacao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.normas-page mark {
+  background: var(--color-primary-gold);
+  color: var(--color-surface-lowest);
+  border-radius: 2px;
+  padding: 0 2px;
+}

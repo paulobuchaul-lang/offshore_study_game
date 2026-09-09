@@ -1,0 +1,65 @@
+[
+  {
+    "id": "et-sub-108",
+    "codigo": "Petrobras ET-SUB-108",
+    "organismoEmissor": "Petrobras",
+    "resumo": "Define requisitos de projeto, fabricação, testes e interfaces para ANMs em lâmina d'água ultraprofunda (até 2.500m). Especifica tolerâncias angulares de descida por cabo de aço sem cabos-guia, acoplamento estrutural de conector H-4 e protocolo de redundância eletro-hidráulica do Módulo de Controle Submarino (SCM).",
+    "nivelObrigatoriedade": "Obrigatório Pré-Sal",
+    "equipamentosRelacionados": ["ANM Guidelineless", "Tubing Hanger", "Conector de Poço H-4", "SCM Pod"],
+    "moduloRelacionadoId": null
+  },
+  {
+    "id": "api-17d",
+    "codigo": "API SPEC 17D / ISO 13628-4",
+    "organismoEmissor": "API",
+    "resumo": "Especificação mandatória para árvores de natal submarinas, cabeças de poço (wellheads) e linhas de fluxo de completação. Estabelece critérios de barreira de pressão de 5.000 a 15.000 psi, ciclos térmicos de -18°C a +121°C e testes rigorosos de estanqueidade em fábrica (FAT) e aceitação em campo (SIT).",
+    "nivelObrigatoriedade": "Padrão Global",
+    "equipamentosRelacionados": ["Master Valves (PMV/AMV)", "Wing Valves (PWV)", "Choke Subsea", "Annulus Line"],
+    "moduloRelacionadoId": null
+  },
+  {
+    "id": "dnv-st-f101",
+    "codigo": "DNV-ST-F101",
+    "organismoEmissor": "DNV",
+    "resumo": "Código de projeto baseado em estados limites para dutos rígidos e linhas submarinas. Estabelece critérios analíticos para tensões de instalação por J-Lay e S-Lay, resistência ao colapso por pressão hidrostática externa em águas ultraprofundas e propagação de flambagem local térmica.",
+    "nivelObrigatoriedade": "Integridade SURF",
+    "equipamentosRelacionados": ["Dutos Rígidos", "PLET / PLEM", "Spools Subsea", "Jumper de Duto"],
+    "moduloRelacionadoId": null
+  },
+  {
+    "id": "et-sub-7740",
+    "codigo": "Petrobras ET-SUB-7740",
+    "organismoEmissor": "Petrobras",
+    "resumo": "Regulamenta a sequência de transferência e recolhimento de linhas flexíveis e umbilicais através do I-Tube/J-Tube em unidades flutuantes de produção. Define trações máximas no guincho linear, limites angulares do raio de curvatura mínima (MBR) e salvaguardas de estanqueidade no bend stiffener.",
+    "nivelObrigatoriedade": "Operação FPSO",
+    "equipamentosRelacionados": ["Risers Flexíveis", "Umbilicais Eletro-Hidr.", "I-Tube Guide", "Bend Stiffener"],
+    "moduloRelacionadoId": null
+  },
+  {
+    "id": "api-17b-17j",
+    "codigo": "API RP 17B & SPEC 17J",
+    "organismoEmissor": "API",
+    "resumo": "Prática recomendada e especificação para tubos flexíveis não ligados (unbonded). Critérios de cálculo de vida em fadiga por VIV (Vortex-Induced Vibration), degradação polimérica por CO2/H2S em ambiente de águas ultraprofundas e protocolos de inspeção e monitoramento por ROV.",
+    "nivelObrigatoriedade": "Flexíveis Pré-Sal",
+    "equipamentosRelacionados": ["Risers Flexíveis", "Flowlines Submarinos", "Carcaça Inox (Carcass)", "Armadura de Tração"],
+    "moduloRelacionadoId": null
+  },
+  {
+    "id": "norsok-u001",
+    "codigo": "NORSOK U-001 / DNV-RP-E101",
+    "organismoEmissor": "DNV",
+    "resumo": "Requisitos de integridade para garantia de escoamento (Flow Assurance), injeção contínua de produtos químicos (MEG, inibidores termodinâmicos de hidratos e incrustação) e controle de deposição orgânica sob as severas condições de pressão e baixas temperaturas abissais (4°C).",
+    "nivelObrigatoriedade": "Flow Assurance",
+    "equipamentosRelacionados": ["SDU (Distr. Unit)", "UTA (Umbilical Term.)", "Mandril de Injeção MEG", "Tubulação de Serviço"],
+    "moduloRelacionadoId": null
+  },
+  {
+    "id": "nace-mr0175",
+    "codigo": "NACE MR0175 / ISO 15156",
+    "organismoEmissor": "NACE",
+    "resumo": "Define requisitos de seleção de materiais metálicos resistentes a trincas por fissuração induzida por sulfeto (SSC) em ambientes com presença de H2S (sour service). Orienta a escolha de ligas para árvores de natal, risers e equipamentos submarinos expostos a produção ácida, com foco em dureza máxima e composição metalúrgica controlada.",
+    "nivelObrigatoriedade": "Materiais Sour Service",
+    "equipamentosRelacionados": ["ANM Sour Service", "Tubing", "Conexões Sour", "Válvulas Sour"],
+    "moduloRelacionadoId": null
+  }
+]

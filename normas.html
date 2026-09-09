@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Biblioteca de Normas Técnicas — Offshore Estudy Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/core-tokens.css" />
+<link rel="stylesheet" href="assets/css/cockpit-master.css" />
+<link rel="stylesheet" href="assets/css/crt-arcade.css" />
+<link rel="stylesheet" href="assets/css/print.css" media="print" />
+</head>
+<body>
+
+<main class="normas-page">
+  <section class="card normas-page__header">
+    <h1 class="font-display text-gold normas-page__title">BIBLIOTECA DE NORMAS TÉCNICAS</h1>
+    <p class="text-dim normas-page__aviso">📋 Lista inicial (seed) com 7 normas de referência, organizadas por organismo emissor. Não é uma relação completa/oficial — novas normas serão adicionadas conforme o conteúdo técnico do jogo avançar.</p>
+
+    <input
+      type="text"
+      id="normas-busca"
+      class="normas-page__busca"
+      placeholder="Buscar código ou tema da norma..."
+      autocomplete="off"
+    />
+
+    <div class="normas-page__pills" id="normas-pills"></div>
+
+    <div class="normas-page__controles">
+      <span class="font-mono text-dim" id="normas-contador"></span>
+      <label class="font-mono text-dim normas-page__page-size">
+        Por página:
+        <select id="normas-tamanho-pagina">
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </label>
+      <button type="button" id="normas-exportar" class="cockpit-master__btn">🖨️ Exportar/Imprimir</button>
+    </div>
+  </section>
+
+  <section class="normas-page__lista" id="normas-lista"></section>
+
+  <nav class="normas-page__paginacao" id="normas-paginacao"></nav>
+</main>
+
+<script src="assets/js/theme-controller.js"></script>
+<script src="assets/js/audio-engine.js"></script>
+<script src="assets/js/state-store.js"></script>
+<script src="assets/js/github-sync-client.js"></script>
+<script src="assets/js/list-engine.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/cockpit-element.js"></script>
+<script>
+  const cockpit = SubseaCockpit.init({ activeNav: 'normas' });
+
+  const ORDEM_ORGANISMOS = ['Petrobras', 'API', 'DNV', 'ISO', 'NACE', 'Outro'];
+  function rankOrganismo(organismo) {
+    const i = ORDEM_ORGANISMOS.indexOf(organismo);
+    return i === -1 ? ORDEM_ORGANISMOS.length : i;
+  }
+
+  const engine = criarMotorDeLista({
+    url: 'data/normas.json',
+    camposBusca: ['codigo', 'resumo', 'organismoEmissor'],
+    ordenarPor: (n) => `${String(rankOrganismo(n.organismoEmissor)).padStart(2, '0')}-${n.codigo}`,
+    chaveAgrupamento: 'organismoEmissor',
+  });
+
+  let buscaAtual = '';
+  let organismoAtivo = 'all';
+  let tamanhoPagina = 10;
+  let paginaAtual = 1;
+
+  function renderPills() {
+    const organismosPresentes = Array.from(new Set(engine.itens.map((n) => n.organismoEmissor)))
+      .sort((a, b) => rankOrganismo(a) - rankOrganismo(b));
+
+    const pills = [
+      { id: 'all', label: `TODAS (${engine.itens.length})` },
+      ...organismosPresentes.map((organismo) => ({
+        id: organismo,
+        label: `${organismo.toUpperCase()} (${engine.itens.filter((n) => n.organismoEmissor === organismo).length})`,
+      })),
+    ];
+
+    const el = document.getElementById('normas-pills');
+    el.innerHTML = pills
+      .map(
+        (p) =>
+          `<button type="button" class="normas-page__pill ${p.id === organismoAtivo ? 'normas-page__pill--ativo' : ''}" data-organismo="${p.id}">${p.label}</button>`,
+      )
+      .join('');
+    el.querySelectorAll('[data-organismo]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        organismoAtivo = btn.dataset.organismo;
+        paginaAtual = 1;
+        cockpit.audio.playBlip(700, 0.05);
+        atualizar();
+      });
+    });
+  }
+
+  function filtrarPorOrganismo(lista) {
+    if (organismoAtivo === 'all') return lista;
+    return lista.filter((n) => n.organismoEmissor === organismoAtivo);
+  }
+
+  function renderLista(listaFiltrada) {
+    const { itens, totalPaginas } = engine.paginar(listaFiltrada, paginaAtual, tamanhoPagina);
+    const listaEl = document.getElementById('normas-lista');
+
+    if (listaFiltrada.length === 0) {
+      listaEl.innerHTML = `
+        <div class="card normas-page__vazio">
+          <p class="text-dim">Nenhuma norma encontrada para "${buscaAtual}".</p>
+        </div>`;
+      document.getElementById('normas-paginacao').innerHTML = '';
+      return;
+    }
+
+    const grupos = engine.agrupar(itens);
+    listaEl.innerHTML = Array.from(grupos.entries())
+      .map(([organismo, normasDoGrupo]) => {
+        const cards = normasDoGrupo
+          .map((n) => {
+            const codigoDestacado = engine.destacar(n.codigo, buscaAtual);
+            const resumoDestacado = engine.destacar(n.resumo, buscaAtual);
+            const badge = n.nivelObrigatoriedade
+              ? `<span class="normas-page__badge">${n.nivelObrigatoriedade}</span>`
+              : '';
+            const tags = n.equipamentosRelacionados && n.equipamentosRelacionados.length
+              ? `<div class="normas-page__tags">${n.equipamentosRelacionados
+                  .map((eq) => `<span class="normas-page__tag">${eq}</span>`)
+                  .join('')}</div>`
+              : '';
+            const linkModulo = n.moduloRelacionadoId
+              ? `<a href="capitulos/index.html" class="font-mono glossario-page__link-modulo">Ver módulo relacionado →</a>`
+              : '';
+            return `
+              <article class="card normas-page__norma">
+                <div class="normas-page__norma-cabecalho">
+                  <h3 class="font-display text-gold normas-page__norma-codigo">${codigoDestacado}</h3>
+                  ${badge}
+                </div>
+                <p class="normas-page__norma-resumo">${resumoDestacado}</p>
+                ${tags}
+                ${linkModulo}
+              </article>`;
+          })
+          .join('');
+        return `
+          <div class="normas-page__grupo">
+            <h2 class="font-display text-gold normas-page__grupo-titulo">${organismo} <span class="text-dim font-mono">(${normasDoGrupo.length})</span></h2>
+            ${cards}
+          </div>`;
+      })
+      .join('');
+
+    renderPaginacao(totalPaginas);
+  }
+
+  function renderPaginacao(totalPaginas) {
+    const el = document.getElementById('normas-paginacao');
+    if (totalPaginas <= 1) {
+      el.innerHTML = '';
+      return;
+    }
+    let botoes = '';
+    for (let p = 1; p <= totalPaginas; p += 1) {
+      botoes += `<button type="button" class="cockpit-master__btn ${p === paginaAtual ? 'text-gold' : ''}" data-pagina="${p}">${p}</button>`;
+    }
+    el.innerHTML = botoes;
+    el.querySelectorAll('[data-pagina]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        paginaAtual = Number(btn.dataset.pagina);
+        atualizar();
+      });
+    });
+  }
+
+  function atualizar() {
+    const listaFiltrada = filtrarPorOrganismo(engine.filtrar(buscaAtual));
+    document.getElementById('normas-contador').textContent =
+      buscaAtual || organismoAtivo !== 'all'
+        ? `${listaFiltrada.length} de ${engine.itens.length} normas`
+        : `${engine.itens.length} normas`;
+    renderPills();
+    renderLista(listaFiltrada);
+  }
+
+  document.getElementById('normas-busca').addEventListener('input', (e) => {
+    buscaAtual = e.target.value.trim();
+    paginaAtual = 1;
+    atualizar();
+  });
+
+  document.getElementById('normas-tamanho-pagina').addEventListener('change', (e) => {
+    tamanhoPagina = Number(e.target.value);
+    paginaAtual = 1;
+    atualizar();
+    cockpit.audio.playBlip(650, 0.05);
+  });
+
+  document.getElementById('normas-exportar').addEventListener('click', () => {
+    window.print();
+  });
+
+  engine.carregar().then(atualizar);
+</script>
+</body>
+</html>

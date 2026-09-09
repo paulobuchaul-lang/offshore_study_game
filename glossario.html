@@ -56,12 +56,27 @@
 <script src="assets/js/audio-engine.js"></script>
 <script src="assets/js/state-store.js"></script>
 <script src="assets/js/github-sync-client.js"></script>
-<script src="assets/js/glossario-engine.js"></script>
+<script src="assets/js/list-engine.js"></script>
 <script src="assets/js/navigation.js"></script>
 <script src="assets/js/cockpit-element.js"></script>
 <script>
   const cockpit = SubseaCockpit.init({ activeNav: 'glossario' });
-  const engine = window.SubseaGlossarioEngine;
+  const engine = criarMotorDeLista({
+    url: 'data/glossario.json',
+    camposBusca: ['termo', 'sigla', 'definicao'],
+    ordenarPor: (t) => t.termo,
+  });
+
+  const CATEGORIA_ICONE = {
+    'valvula-equipamento': '🔧',
+    'duto-riser': '〰️',
+    'embarcacao-unidade': '🚢',
+    poco: '🛢️',
+    geral: '📦',
+  };
+  function getIconeCategoria(categoria) {
+    return CATEGORIA_ICONE[categoria] || CATEGORIA_ICONE.geral;
+  }
 
   let buscaAtual = '';
   let tamanhoPagina = 10;
@@ -99,7 +114,7 @@
     listaEl.innerHTML = itens
       .map((t) => {
         const inicial = t.termo.charAt(0).toUpperCase();
-        const icone = engine.getIconeCategoria(t.categoria);
+        const icone = getIconeCategoria(t.categoria);
         const termoDestacado = engine.destacar(t.termo, buscaAtual);
         const definicaoDestacada = engine.destacar(t.definicao, buscaAtual);
         const linkModulo = t.moduloRelacionadoId
@@ -185,8 +200,8 @@
     const listaFiltrada = engine.filtrar(buscaAtual);
     document.getElementById('glossario-contador').textContent =
       buscaAtual
-        ? `${listaFiltrada.length} de ${engine.termos.length} termos`
-        : `${engine.termos.length} termos`;
+        ? `${listaFiltrada.length} de ${engine.itens.length} termos`
+        : `${engine.itens.length} termos`;
     renderIndiceAlfabetico(listaFiltrada);
     renderLista(listaFiltrada);
   }
