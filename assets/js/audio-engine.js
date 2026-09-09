@@ -129,18 +129,25 @@ class SubseaAudioEngine {
     if (!this.ctx) return;
     this.bgmEnabled = true;
 
-    // Sequenciador de 16 passos (200ms/passo, ~3.2s de loop) em Lá menor — baixo sincopado,
-    // arpejo de lead nos contratempos e um "hi-hat" curto marcando o groove.
-    const STEP_MS = 200;
-    const bassLine = [110, 0, 110, 130.81, 0, 110, 0, 98, 110, 0, 110, 130.81, 0, 98, 0, 110];
-    const leadLine = [0, 440, 0, 523.25, 0, 659.25, 0, 523.25, 0, 440, 0, 392, 0, 523.25, 0, 440];
-    const hatSteps = [1, 3, 5, 7, 9, 11, 13, 15];
+    // Sequenciador de 32 passos (170ms/passo, ~5.4s de loop): progressão Lá menor–Fá–Dó–Sol
+    // ("vi-IV-I-V", a mesma família de "Let It Be"/"Africa"), baixo em "oom-pah" e uma
+    // melodia de lead com frase e resolução real, no lugar do arpejo repetitivo anterior.
+    const STEP_MS = 170;
+    const bassLine = [
+      110, 0, 110, 0, 87.31, 0, 87.31, 0, 130.81, 0, 130.81, 0, 98, 0, 98, 0,
+      110, 0, 110, 0, 87.31, 0, 87.31, 0, 130.81, 0, 130.81, 0, 98, 0, 98, 0,
+    ];
+    const leadLine = [
+      440, 0, 523.25, 0, 493.88, 0, 440, 0, 523.25, 0, 587.33, 0, 659.25, 587.33, 523.25, 0,
+      440, 0, 523.25, 0, 493.88, 0, 440, 0, 392, 0, 440, 0, 493.88, 440, 0, 0,
+    ];
+    const hatSteps = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31];
     let step = 0;
 
     const playStep = () => {
       if (!this.bgmEnabled) return;
       const t = this.ctx.currentTime;
-      const i = step % 16;
+      const i = step % 32;
 
       if (bassLine[i]) {
         const osc = this.ctx.createOscillator();
@@ -160,12 +167,12 @@ class SubseaAudioEngine {
         const gain = this.ctx.createGain();
         osc.type = 'square';
         osc.frequency.setValueAtTime(leadLine[i], t);
-        gain.gain.setValueAtTime(this.volume * 0.14, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+        gain.gain.setValueAtTime(this.volume * 0.18, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
         osc.connect(gain);
         gain.connect(this.masterGain);
         osc.start(t);
-        osc.stop(t + 0.16);
+        osc.stop(t + 0.3);
       }
 
       if (hatSteps.includes(i)) {

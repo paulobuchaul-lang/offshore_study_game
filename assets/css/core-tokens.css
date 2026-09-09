@@ -84,7 +84,7 @@ body {
   overflow: hidden;
   background-image:
     radial-gradient(ellipse at center, rgba(9, 20, 32, 0) 35%, rgba(9, 20, 32, 0.75) 100%),
-    url('img/opening/plataforma-noturna.jpg');
+    url('../img/opening/plataforma-noturna.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
