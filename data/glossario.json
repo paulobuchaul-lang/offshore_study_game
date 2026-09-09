@@ -5,6 +5,7 @@
     "sigla": "ANM",
     "definicao": "Conjunto de válvulas instalado sobre o poço submarino para controlar a produção de óleo e gás. É a principal barreira de segurança do poço.",
     "categoria": "valvula-equipamento",
+    "imagem": "assets/img/glossario/anm.png",
     "moduloRelacionadoId": null
   },
   {
