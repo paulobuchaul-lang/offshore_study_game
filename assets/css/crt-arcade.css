@@ -16,12 +16,16 @@
 }
 
 /* Tema Daylight: o mesmo overlay escuro fica pesado sobre fundo claro —
-   opacidade bem mais sutil para manter o ar retrô sem sujar a tela clara. */
+   opacidade bem mais sutil para manter o ar retrô sem sujar a tela clara.
+   `background-size` precisa ser repetido aqui: a propriedade-atalho `background`
+   reseta o tamanho para o padrão (auto) quando não o inclui, esticando o
+   gradiente inteiro na tela em vez de repeti-lo a cada 4px (bug do E004). */
 html.light-mode .opening__scanlines,
 html.light-mode .crt-scanlines,
 html[data-theme="light"] .opening__scanlines,
 html[data-theme="light"] .crt-scanlines {
   background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.12) 50%);
+  background-size: 100% 4px;
 }
 
 .crt-chanfro {
