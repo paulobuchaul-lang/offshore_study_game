@@ -68,7 +68,7 @@
 
         <div class="opening__start-area">
           <button type="button" id="press-start-btn" class="opening__start-btn font-display">
-            ▶ PRESS START BUTTON ◀
+            ▶ START ◀
           </button>
           <p class="opening__hint font-mono">OU PRESSIONE [ENTER] / [ESPAÇO] NO TECLADO</p>
         </div>
@@ -181,6 +181,37 @@
 
   atualizarPainelDaUsuaria();
   cockpit.store.onChange(atualizarPainelDaUsuaria);
+
+  /**
+   * Mede-e-corrige: aplica a largura cheia do gabinete, mede o overflow real
+   * da página contra a viewport, e só então encolhe o monitor pela quantidade
+   * exata que sobrou (via aspect-ratio 16:9) — mais confiável do que estimar
+   * altura de header/slots/rodapé de antemão ou decorar aspect-ratio/max-height
+   * em % dentro de min()/calc(), que ora colapsava a caixa, ora não segurava a
+   * largura no mobile.
+   */
+  function ajustarTamanhoMonitor() {
+    const monitor = document.querySelector('.opening__monitor');
+    const cabinet = document.querySelector('.opening__cabinet');
+    if (!monitor || !cabinet) return;
+
+    monitor.style.width = `${cabinet.clientWidth}px`;
+
+    // No mobile o layout empilhado (header 2 linhas + monitor + 3 slots) já cabia
+    // bem com a largura cheia — o pedido de "caber na página" era sobre desktop,
+    // onde monitor+slots+rodapé lado a lado sobravam para baixo da dobra.
+    if (window.innerWidth < 720) return;
+
+    const overflow = document.documentElement.scrollHeight - window.innerHeight;
+    if (overflow > 0) {
+      const alturaAlvo = Math.max(220, monitor.offsetHeight - overflow);
+      const larguraAlvo = (alturaAlvo * 16) / 9;
+      monitor.style.width = `${Math.min(cabinet.clientWidth, larguraAlvo)}px`;
+    }
+  }
+
+  ajustarTamanhoMonitor();
+  window.addEventListener('resize', ajustarTamanhoMonitor);
 
   function syncAudioLabel() {
     document.getElementById('opening-audio-label').textContent = cockpit.audio.isBgmPlaying()

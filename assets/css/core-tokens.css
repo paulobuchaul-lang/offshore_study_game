@@ -168,12 +168,12 @@ body {
 
 /* Corpo da tela */
 .opening {
-  min-height: calc(100vh - 130px);
+  min-height: calc(100vh - 110px);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 20px 12px;
+  padding: 12px;
   opacity: 1;
   transition: opacity 0.25s ease-in;
 }
@@ -187,20 +187,28 @@ body {
   max-width: 1100px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
   position: relative;
   z-index: 2;
   animation: subsea-card-in 0.6s ease-out 0.1s both;
 }
 
-/* Gabinete do monitor CRT: moldura, parafusos de canto e vidro com bevel. */
+/* Gabinete do monitor CRT: moldura, parafusos de canto e vidro com bevel.
+   A largura exata (px) é calculada em JS (index.html, ajustarTamanhoMonitor)
+   a partir do espaço vertical realmente disponível — tentativas só em CSS
+   (aspect-ratio + max-height/width via % dentro de min()/calc()) ora colapsavam
+   a caixa, ora não clampavam no mobile; aspect-ratio aqui só deriva a altura a
+   partir da largura definida (px) que o JS aplica, caso simples e sem ambiguidade. */
 .opening__monitor {
   position: relative;
   background: var(--color-surface-lowest);
   border: 4px solid var(--color-surface-border);
   border-radius: 10px;
-  padding: 10px;
+  padding: 8px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 .opening__screw {
@@ -219,8 +227,8 @@ body {
 
 .opening__monitor-screen {
   position: relative;
-  aspect-ratio: 16 / 9;
-  max-height: 620px;
+  width: 100%;
+  height: 100%;
   border-radius: 6px;
   overflow: hidden;
   background: #000;
@@ -267,6 +275,7 @@ body {
   position: absolute;
   top: 4%;
   left: 3%;
+  max-width: calc(100% - 6% - 10px);
   background: rgba(0, 0, 0, 0.85);
   border: 1px solid color-mix(in srgb, var(--color-primary-gold) 60%, transparent);
   color: var(--color-primary-gold);
@@ -276,6 +285,9 @@ body {
   align-items: center;
   gap: 8px;
   letter-spacing: 0.04em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .opening__badge-version {
@@ -371,7 +383,7 @@ body {
 }
 
 .opening__start-btn {
-  padding: 10px 22px;
+  padding: 8px 18px;
   background: rgba(0, 0, 0, 0.8);
   border: 3px solid var(--color-primary-gold);
   color: var(--color-primary-gold);
@@ -379,14 +391,15 @@ body {
   font-size: 11px;
   cursor: pointer;
   box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary-gold) 50%, transparent);
-  animation: subsea-blink-fast 0.9s infinite;
-  transition: transform 0.15s ease;
+  animation: subsea-start-bounce 0.9s ease-in-out infinite;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
 .opening__start-btn:hover {
   background: var(--color-surface-card);
   border-color: var(--color-text-main);
-  transform: scale(1.04);
+  animation-play-state: paused;
+  transform: scale(1.06);
 }
 
 .opening__hint {
@@ -396,6 +409,27 @@ body {
   background: rgba(0, 0, 0, 0.55);
   padding: 3px 8px;
   border-radius: 3px;
+}
+
+/* Telas estreitas: o "PRESS START BUTTON" já está na própria arte — o botão real
+   só precisa de "START", menor, para não sobrepor o título quando a imagem encolhe.
+   Mesmo breakpoint (720px) já usado para telemetria/radar/slots neste arquivo. */
+@media (max-width: 720px) {
+  .opening__start-area {
+    bottom: 4%;
+    gap: 4px;
+  }
+
+  .opening__start-btn {
+    padding: 4px 10px;
+    border-width: 2px;
+    font-size: 8px;
+  }
+
+  .opening__hint {
+    font-size: 6px;
+    padding: 2px 5px;
+  }
 }
 
 /* Menu de 3 slots de acesso rápido, abaixo do gabinete. */
@@ -681,20 +715,17 @@ body {
   50% { opacity: 0.75; }
 }
 
+@keyframes subsea-start-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* RF-12 é sobre shake/flash de transição entre telas (ver crt-arcade.css), não sobre
+   animações decorativas em loop suave — essas continuam mesmo com reduced-motion,
+   mesmo padrão já usado no resto do projeto. */
 @media (prefers-reduced-motion: reduce) {
   .opening {
     transition: none;
-  }
-  .opening__hero-art,
-  .opening__cabinet,
-  .opening__flare,
-  .opening__flare-core,
-  .opening__radar-sweep,
-  .opening__radar-ping,
-  .opening-header__brand-dot,
-  .opening__start-btn,
-  .opening-modal__icon {
-    animation: none;
   }
 }
 
