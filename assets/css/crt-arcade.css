@@ -21,7 +21,7 @@ html.light-mode .opening__scanlines,
 html.light-mode .crt-scanlines,
 html[data-theme="light"] .opening__scanlines,
 html[data-theme="light"] .crt-scanlines {
-  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.035) 50%);
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.12) 50%);
 }
 
 .crt-chanfro {
