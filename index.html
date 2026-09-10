@@ -15,41 +15,138 @@
 </head>
 <body>
 
+<header id="opening-header" class="opening-header">
+  <div class="opening-header__brand">
+    <span class="opening-header__brand-dot" aria-hidden="true"></span>
+    <span class="opening-header__brand-text font-display">OFFSHORE ESTUDY GAME · 16-BIT</span>
+  </div>
+  <div class="opening-header__telemetry font-mono" aria-hidden="true">
+    <span>CAMPO: <b>BÚZIOS // PRÉ-SAL</b></span>
+    <span>LÂMINA: <b>-2.200 M</b></span>
+    <span>STATUS: <b class="opening-header__status-ok">PRONTA PARA MERGULHO</b></span>
+  </div>
+  <div class="opening-header__controls">
+    <button type="button" id="opening-crt-btn" class="opening-header__btn font-mono">📺 CRT: <span id="opening-crt-status">ON</span></button>
+    <button type="button" id="opening-audio-btn" class="opening-header__btn opening-header__btn--gold font-mono">🎵 <span id="opening-audio-label">TRILHA: INICIAR</span></button>
+    <button type="button" id="opening-theme-btn" class="opening-header__btn font-mono" title="Alternar tema Abissal/Daylight">☀️ / 🌙</button>
+  </div>
+</header>
+
 <main class="opening" id="opening-main">
-  <div class="opening__scanlines" aria-hidden="true"></div>
+  <div class="opening__scanlines" id="opening-scanlines" aria-hidden="true"></div>
 
-  <div class="opening__banner" aria-hidden="true">
-    <div class="opening__stars">
-      <span class="opening__star" style="top: 8%; left: 12%; animation-delay: 0s;"></span>
-      <span class="opening__star" style="top: 14%; left: 82%; animation-delay: 0.6s;"></span>
-      <span class="opening__star" style="top: 22%; left: 45%; animation-delay: 1.2s;"></span>
-      <span class="opening__star" style="top: 6%; left: 62%; animation-delay: 1.8s;"></span>
-      <span class="opening__star" style="top: 18%; left: 25%; animation-delay: 2.4s;"></span>
-      <span class="opening__star" style="top: 10%; left: 92%; animation-delay: 0.3s;"></span>
-      <span class="opening__star" style="top: 26%; left: 8%; animation-delay: 1.5s;"></span>
+  <div class="opening__cabinet">
+    <div class="opening__monitor">
+      <span class="opening__screw opening__screw--tl" aria-hidden="true"></span>
+      <span class="opening__screw opening__screw--tr" aria-hidden="true"></span>
+      <span class="opening__screw opening__screw--bl" aria-hidden="true"></span>
+      <span class="opening__screw opening__screw--br" aria-hidden="true"></span>
+      <div class="opening__monitor-screen">
+        <img class="opening__hero-art" src="assets/img/opening/tela-abertura-stitch.jpg" alt="Offshore Estudy Game — plataforma offshore ao entardecer, título em pixel art 16-bit" />
+
+        <div class="opening__flare" aria-hidden="true"></div>
+        <div class="opening__flare-core" aria-hidden="true"></div>
+
+        <div class="opening__badge font-display">
+          <span aria-hidden="true">★</span> EDIÇÃO ESPECIAL PETROBRAS
+          <span class="opening__badge-version">V1.64</span>
+        </div>
+
+        <div class="opening__radar" aria-hidden="true">
+          <div class="opening__radar-scope">
+            <span class="opening__radar-ring opening__radar-ring--outer"></span>
+            <span class="opening__radar-ring opening__radar-ring--inner"></span>
+            <span class="opening__radar-sweep"></span>
+            <span class="opening__radar-ping"></span>
+          </div>
+          <div class="opening__radar-label font-mono">
+            <div class="opening__radar-title">SONAR BATIMÉTRICO</div>
+            <div>ROV // ANM BÚZIOS</div>
+            <div class="opening__radar-depth">PROF: 2.198 m</div>
+          </div>
+        </div>
+
+        <div class="opening__start-area">
+          <button type="button" id="press-start-btn" class="opening__start-btn font-display">
+            ▶ PRESS START BUTTON ◀
+          </button>
+          <p class="opening__hint font-mono">OU PRESSIONE [ENTER] / [ESPAÇO] NO TECLADO</p>
+        </div>
+      </div>
     </div>
-    <div class="opening__water-shimmer"></div>
+
+    <nav class="opening__slots" aria-label="Acesso rápido">
+      <a href="capitulos/index.html" class="opening__slot opening__slot--gold">
+        <div class="opening__slot-head font-display">
+          <span class="opening__slot-tag"><span class="opening__slot-dot"></span> SLOT 01: RAFAELA</span>
+          <span class="opening__slot-badge" id="slot-nivel-badge">NV. --</span>
+        </div>
+        <div class="opening__slot-body">
+          <strong>ENGENHEIRA SÊNIOR OFFSHORE</strong>
+          <span id="slot-progresso-texto">Progresso: --</span>
+        </div>
+        <div class="opening__slot-foot font-display"><span>[CONTINUAR MISSÃO]</span><span aria-hidden="true">➔</span></div>
+      </a>
+
+      <a href="conquistas.html" class="opening__slot">
+        <div class="opening__slot-head font-display">
+          <span class="opening__slot-tag opening__slot-tag--cyan">🏆 HALL DA FAMA</span>
+          <span class="opening__slot-badge opening__slot-badge--muted">16-BIT CRT</span>
+        </div>
+        <div class="opening__slot-body">
+          <strong>SALA DE TROFÉUS &amp; INSÍGNIAS</strong>
+          <span>Suas conquistas e badges desbloqueados</span>
+        </div>
+        <div class="opening__slot-foot font-display"><span>[VER TROFÉUS]</span><span aria-hidden="true">➔</span></div>
+      </a>
+
+      <a href="capitulos/index.html" class="opening__slot opening__slot--green">
+        <div class="opening__slot-head font-display">
+          <span class="opening__slot-tag opening__slot-tag--green">🗺️ MAPA MUNDI SUBSEA</span>
+          <span class="opening__slot-badge opening__slot-badge--muted">24 FASES</span>
+        </div>
+        <div class="opening__slot-body">
+          <strong>TRILHA COMPLETA OFFSHORE</strong>
+          <span>Do Wellhead ao Topside FPSO</span>
+        </div>
+        <div class="opening__slot-foot font-display"><span>[EXPLORAR TRILHA]</span><span aria-hidden="true">➔</span></div>
+      </a>
+    </nav>
   </div>
-
-  <div class="opening__content">
-    <img id="opening-rafaela" class="opening__rafaela" alt="" aria-hidden="true" />
-
-    <section class="opening__hero card">
-      <p class="font-mono text-dim opening__eyebrow">SISTEMA TÁTICO OFFSHORE</p>
-      <h1 class="font-display opening__title text-gold">OFFSHORE<br />ESTUDY GAME</h1>
-      <p class="opening__subtitle">
-        Engenharia submarina e exploração de petróleo, em uma jornada de estudo no seu ritmo.
-      </p>
-
-      <button type="button" id="press-start-btn" class="opening__start-btn font-display">
-        ▶ PRESS START ◀
-      </button>
-
-      <p class="font-mono text-dim opening__hint">Aperte Espaço ou Enter</p>
-    </section>
-  </div>
-
 </main>
+
+<footer class="opening-footer font-mono">
+  <div class="opening-footer__brand">
+    <span class="text-gold">OFFSHORE ESTUDY GAME</span>
+    <span>© 2026 Plataforma Educacional Rafaela</span>
+    <span class="opening-footer__sep">|</span>
+    <span class="opening-footer__cyan">PETROBRAS ET-SUB &amp; API 17D</span>
+  </div>
+  <div class="opening-footer__status">
+    <span><span class="opening-footer__led"></span> SOM SINTETIZADO</span>
+    <span>PRESSIONE [M] PARA MUDAR ÁUDIO</span>
+  </div>
+</footer>
+
+<div id="start-modal" class="opening-modal" hidden>
+  <div class="opening-modal__card">
+    <div class="opening-modal__icon">⚡</div>
+    <h2 class="opening-modal__title font-display">SISTEMA INICIALIZADO!</h2>
+    <p class="opening-modal__text">
+      Bem-vinda de volta a bordo, <span class="text-gold" id="modal-nome-usuaria">Rafaela</span>! Conexão de telemetria estabelecida com o FPSO P-77 e campo submarino de Búzios a -2.200m.
+    </p>
+    <div class="opening-modal__status font-mono">
+      <div class="text-ok">✔ Árvores de Natal Molhadas (ANM): VÁLVULAS OK</div>
+      <div class="text-ok">✔ Linhas Lazy Wave: TENSÃO ESTÁVEL</div>
+      <div class="text-ok">✔ Injeção de MEG: FLOW ASSURANCE SEGURO</div>
+      <div class="text-gold" id="modal-xp">★ XP Atual: -- / -- XP</div>
+    </div>
+    <div class="opening-modal__actions font-display">
+      <button type="button" id="modal-entrar" class="opening-modal__btn opening-modal__btn--primary">[ ENTRAR NO MAPA MUNDI ]</button>
+      <button type="button" id="modal-voltar" class="opening-modal__btn">VOLTAR</button>
+    </div>
+  </div>
+</div>
 
 <script src="assets/js/theme-controller.js"></script>
 <script src="assets/js/audio-engine.js"></script>
@@ -57,22 +154,63 @@
 <script src="assets/js/github-sync-client.js"></script>
 <script src="assets/js/navigation.js"></script>
 <script src="assets/js/cockpit-element.js"></script>
-<script src="assets/js/sprite-utils.js"></script>
 <script>
-  const cockpit = SubseaCockpit.init({ activeNav: 'inicio' });
+  // Tela de abertura tem cabeçalho próprio (adaptado do Stitch): não monta o Cockpit
+  // Mestre nem a navegação padrão, só os motores compartilhados de tema/áudio/estado.
+  const cockpit = SubseaCockpit.init({ activeNav: 'inicio', mountHeader: false, mountNav: false });
 
-  SubseaSpriteUtils.carregarSpriteRecortado(
-    'assets/img/opening/rafaela-sprite.jpg',
-    document.getElementById('opening-rafaela'),
-  );
+  /** Progressão simples de nível: 500 XP por nível, mesma referência usada em progresso.html. */
+  function calcularNivel(xp) {
+    const xpPorNivel = 500;
+    const nivel = Math.floor(xp / xpPorNivel) + 1;
+    return { nivel, xpNoNivel: xp % xpPorNivel, xpParaProximo: xpPorNivel };
+  }
 
-  // Referência real do Stitch: a ilustração e o texto "SUBSEA QUEST" são a mesma imagem.
-  // Recorta só a faixa de cima (plataforma/céu/estrelas), sem o texto queimado na metade de baixo.
-  SubseaSpriteUtils.carregarFundoRecortado(
-    'assets/img/opening/plataforma-noturna.jpg',
-    document.querySelector('.opening__banner'),
-    0.38,
-  );
+  function atualizarPainelDaUsuaria() {
+    const estado = cockpit.store.getState();
+    const totalModulos = 24;
+    const modulosConcluidos = Object.values(estado.progresso.modulos || {}).filter((m) => m && m.concluido).length;
+    const { nivel, xpNoNivel, xpParaProximo } = calcularNivel(estado.progresso.xp || 0);
+    const nivelFormatado = String(nivel).padStart(2, '0');
+
+    document.getElementById('slot-nivel-badge').textContent = `NV. ${nivelFormatado}`;
+    document.getElementById('slot-progresso-texto').textContent = `Progresso: ${modulosConcluidos}/${totalModulos} Fases`;
+    document.getElementById('modal-nome-usuaria').textContent = estado.usuario.nome || 'Rafaela';
+    document.getElementById('modal-xp').textContent = `★ XP Atual: ${xpNoNivel} / ${xpParaProximo} XP (Nível ${nivelFormatado})`;
+  }
+
+  atualizarPainelDaUsuaria();
+  cockpit.store.onChange(atualizarPainelDaUsuaria);
+
+  function syncAudioLabel() {
+    document.getElementById('opening-audio-label').textContent = cockpit.audio.isBgmPlaying()
+      ? 'TRILHA: TOCANDO'
+      : 'TRILHA: INICIAR';
+  }
+  syncAudioLabel();
+
+  document.getElementById('opening-audio-btn').addEventListener('click', () => {
+    if (cockpit.audio.isBgmPlaying()) {
+      cockpit.audio.stopChiptuneBgm();
+      cockpit.store.setAudio({ bgmEnabled: false });
+    } else {
+      cockpit.audio.startChiptuneBgm();
+      cockpit.store.setAudio({ bgmEnabled: true });
+    }
+    syncAudioLabel();
+  });
+
+  document.getElementById('opening-theme-btn').addEventListener('click', () => cockpit.theme.toggle());
+
+  const scanlines = document.getElementById('opening-scanlines');
+  const crtBtn = document.getElementById('opening-crt-btn');
+  const crtStatus = document.getElementById('opening-crt-status');
+  crtBtn.addEventListener('click', () => {
+    const estavaLigado = scanlines.style.display !== 'none';
+    scanlines.style.display = estavaLigado ? 'none' : '';
+    crtStatus.textContent = estavaLigado ? 'OFF' : 'ON';
+    cockpit.audio.playBlip(estavaLigado ? 300 : 600, 0.05);
+  });
 
   function goToTrilha() {
     cockpit.audio.playStartJingle();
@@ -84,11 +222,35 @@
     }, 280);
   }
 
-  document.getElementById('press-start-btn').addEventListener('click', goToTrilha);
+  function abrirModalInicializacao() {
+    if (!cockpit.audio.isBgmPlaying()) {
+      cockpit.audio.startChiptuneBgm();
+      cockpit.store.setAudio({ bgmEnabled: true });
+      syncAudioLabel();
+    }
+    atualizarPainelDaUsuaria();
+    document.getElementById('start-modal').hidden = false;
+  }
+
+  document.getElementById('press-start-btn').addEventListener('click', abrirModalInicializacao);
+  document.getElementById('modal-entrar').addEventListener('click', () => {
+    document.getElementById('start-modal').hidden = true;
+    goToTrilha();
+  });
+  document.getElementById('modal-voltar').addEventListener('click', () => {
+    cockpit.audio.playBlip(350, 0.06);
+    document.getElementById('start-modal').hidden = true;
+  });
+
   window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' || e.code === 'Enter') {
+    const modalAberto = !document.getElementById('start-modal').hidden;
+    if ((e.code === 'Space' || e.code === 'Enter') && !modalAberto) {
       e.preventDefault();
-      goToTrilha();
+      abrirModalInicializacao();
+    } else if (e.code === 'KeyM') {
+      document.getElementById('opening-audio-btn').click();
+    } else if (e.code === 'KeyC') {
+      crtBtn.click();
     }
   });
 </script>

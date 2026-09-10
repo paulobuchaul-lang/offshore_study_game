@@ -64,7 +64,12 @@ const SubseaCockpit = {
   theme: null,
   store: null,
 
-  init({ activeNav = '', basePath = '' } = {}) {
+  /**
+   * `mountHeader`/`mountNav` = false: a página tem seu próprio cabeçalho/navegação
+   * (ex.: a tela de abertura, que reaproveita o layout do Stitch) e só quer os
+   * motores compartilhados (tema, áudio, estado, sync), sem o Cockpit Mestre padrão.
+   */
+  init({ activeNav = '', basePath = '', mountHeader = true, mountNav = true } = {}) {
     ensureFavicon();
     this.store = new window.SubseaStateStore();
     this.audio = new window.SubseaAudioEngine();
@@ -82,16 +87,18 @@ const SubseaCockpit = {
       this.theme.applyTheme(initialState.tema, { silent: true });
     }
 
-    this._mount();
-    this._wireControls();
-    this._refreshSyncIndicator();
+    if (mountHeader) {
+      this._mount();
+      this._wireControls();
+      this._refreshSyncIndicator();
+      this.store.onChange(() => this._refreshSyncIndicator());
+    }
+    this._mountDiveTransition();
     this._resumeBgmSeSalvo();
 
-    if (window.SubseaNavigation && typeof window.SubseaNavigation.render === 'function') {
+    if (mountNav && window.SubseaNavigation && typeof window.SubseaNavigation.render === 'function') {
       window.SubseaNavigation.render({ activeNav, audio: this.audio, basePath });
     }
-
-    this.store.onChange(() => this._refreshSyncIndicator());
 
     this._autoAttachSync();
 
@@ -119,7 +126,6 @@ const SubseaCockpit = {
     }
     mount.className = 'cockpit-master';
     mount.innerHTML = buildCockpitMarkup();
-    this._mountDiveTransition();
   },
 
   _mountDiveTransition() {
