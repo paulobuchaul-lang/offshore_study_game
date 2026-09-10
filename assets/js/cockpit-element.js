@@ -93,6 +93,7 @@ const SubseaCockpit = {
       this._refreshSyncIndicator();
       this.store.onChange(() => this._refreshSyncIndicator());
     }
+    this._mountScanlines();
     this._mountDiveTransition();
     this._resumeBgmSeSalvo();
 
@@ -126,6 +127,20 @@ const SubseaCockpit = {
     }
     mount.className = 'cockpit-master';
     mount.innerHTML = buildCockpitMarkup();
+  },
+
+  /**
+   * Overlay de scanlines (`.crt-scanlines`, `crt-arcade.css`): mesmo padrão visual
+   * em toda a aplicação. A tela de abertura já injeta o dela própria
+   * (`.opening__scanlines`) direto no HTML, então só cria se nenhuma das duas
+   * classes já estiver presente, para nunca duplicar o overlay.
+   */
+  _mountScanlines() {
+    if (document.querySelector('.crt-scanlines, .opening__scanlines')) return;
+    const el = document.createElement('div');
+    el.className = 'crt-scanlines';
+    el.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(el);
   },
 
   _mountDiveTransition() {

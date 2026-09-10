@@ -15,6 +15,15 @@
   mix-blend-mode: multiply;
 }
 
+/* Tema Daylight: o mesmo overlay escuro fica pesado sobre fundo claro —
+   opacidade bem mais sutil para manter o ar retrô sem sujar a tela clara. */
+html.light-mode .opening__scanlines,
+html.light-mode .crt-scanlines,
+html[data-theme="light"] .opening__scanlines,
+html[data-theme="light"] .crt-scanlines {
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.035) 50%);
+}
+
 .crt-chanfro {
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 }

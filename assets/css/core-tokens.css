@@ -416,8 +416,8 @@ body {
    Mesmo breakpoint (720px) já usado para telemetria/radar/slots neste arquivo. */
 @media (max-width: 720px) {
   .opening__start-area {
-    bottom: 4%;
-    gap: 4px;
+    bottom: 1%;
+    gap: 3px;
   }
 
   .opening__start-btn {
